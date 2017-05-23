@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Circuit
 {
+    using Models;
+
     public class BoardController
     {
         public BoardController()
@@ -14,14 +16,15 @@ namespace Circuit
 
         public void Load()
         {
-            var path = @"C:\Users\srm\Desktop\test.txt";
+            var path = @"C:\Users\srm\Desktop\Circuit1_FullAdder.txt";
             var reader = new FileReader(path);
+            var boardParser = new BoardParser();
 
             try
             {
-                foreach (var c in reader.Read())
+                foreach (var line in reader.ReadLine())
                 {
-                    Console.WriteLine(c);
+                    boardParser.Parse(line);
                 }
 
                 

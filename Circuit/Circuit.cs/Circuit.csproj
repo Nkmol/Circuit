@@ -48,6 +48,10 @@
       <Project>{099a1b21-9e0d-49f3-ab51-f0573daec404}</Project>
       <Name>Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{c7696b51-f04c-4cd9-8a39-e5cd8b8ea475}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

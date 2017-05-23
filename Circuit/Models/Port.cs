@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public abstract class Port
+    public abstract class Port : Component
     {
         private int delay;
 

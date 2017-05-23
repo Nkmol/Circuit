@@ -17,11 +17,12 @@ namespace Helpers
             this._path = path;
         }
 
-        public IEnumerable<string> Read()
+        public IEnumerable<string> ReadLine()
         {
             if(!Exists())
                 throw new Exception("File does not exists.");
 
+            // TODO ".txt" is specific to our implementation
             if(!HasExtension(".txt"))
                    throw new Exception("Wrong extension, only '.txt' is supported.");
 

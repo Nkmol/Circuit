@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Board
+    class OR : Port
     {
-        private LinkedList<Component> componenten;
     }
 }

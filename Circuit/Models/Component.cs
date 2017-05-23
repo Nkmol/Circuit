@@ -8,8 +8,8 @@ namespace Models
 {
     public abstract class Component
     {
-        private string name;
-        private string description;
-        private Bit output;
+        public string name;
+        public string description;
+        public Bit output = Bit.LOW;
     }
 }

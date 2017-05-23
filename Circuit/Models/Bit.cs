@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
+    [Flags]
     public enum Bit  {
-        Off = 0,
-        On = 1
+        HIGH = 0,
+        LOW = 1
     }
 }
