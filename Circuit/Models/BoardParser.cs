@@ -15,6 +15,9 @@ namespace Models
         private const char _endOfExp = ';';
         private const char _comment = '#';
         private const char _variableDelimeter = '_';
+        private const char _comma = ',';
+
+        private LinkedList<LinkedListNode<Component>> _linked = new LinkedList<LinkedListNode<Component>>();
 
         private Dictionary<string, Component> variables = new Dictionary<string, Component>();
         private bool _startProbLinking = false;
@@ -101,7 +104,35 @@ namespace Models
 
         private void ParseLinkLine(string line)
         {
-            
+            Console.WriteLine("ParseLinkLine");
+            //Console.WriteLine(line);
+
+            var route = line.Split(_delimeter);
+			
+            var origin = route[0];
+            var stops = route[1].Split(_comma);
+            var component = variables[origin];
+
+            LinkedListNode<Component> node = new LinkedListNode<Component>(component);
+
+            if(_linked.Count() <= 0){
+                _linked.AddFirst(node);
+            } else {
+
+                List<Component> components = new List<Component>();
+
+                foreach (var textNode in stops)
+                {
+                    var cmp = variables[textNode];
+                    components.Add(variables[textNode]);
+                }
+
+            }
+
+
+
+            Console.WriteLine(origin);
+            Console.WriteLine(variables[origin]);
         }
     }
 }
