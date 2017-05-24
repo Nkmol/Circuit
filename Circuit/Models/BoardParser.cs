@@ -105,34 +105,85 @@ namespace Models
         private void ParseLinkLine(string line)
         {
             Console.WriteLine("ParseLinkLine");
-            //Console.WriteLine(line);
+            Console.WriteLine(line);
 
+            // Separate starting point from the points it will connect with
             var route = line.Split(_delimeter);
 			
+            // Save node into origin variable
             var origin = route[0];
-            var stops = route[1].Split(_comma);
-            var component = variables[origin];
 
-            LinkedListNode<Component> node = new LinkedListNode<Component>(component);
+            // Seperate and store the points it connect with
+            var stops = route[1].Split(_comma);
+
+            // Store origin and points into a dictionary
+            Dictionary<string, Component> seperatedRoute = new Dictionary<string, Component>();
+            var component = variables[origin];
+            component.name = origin;
+            seperatedRoute.Add(origin, component);
+
+            foreach (var stop in stops)
+            {
+                variables[stop].name = stop;
+                seperatedRoute.Add(stop, variables[stop]);
+            }
+
+            //Cin: NODE3,NODE7,NODE10
+
+            Console.WriteLine(seperatedRoute);
+
+
+            LinkedListNode<Component> startnode = new LinkedListNode<Component>(component);
 
             if(_linked.Count() <= 0){
-                _linked.AddFirst(node);
-            } else {
+                _linked.AddFirst(startnode);
 
-                List<Component> components = new List<Component>();
+                // First node should also be last node 
+            } 
 
-                foreach (var textNode in stops)
-                {
-                    var cmp = variables[textNode];
-                    components.Add(variables[textNode]);
-                }
+            List<Component> components = new List<Component>();
 
+            foreach (var textNode in stops)
+            {
+                var cmp = variables[textNode];
+                components.Add(variables[textNode]);
             }
 
 
+            int count = 0;
+            foreach (var com in components)
+            {
+				foreach (var node in _linked)
+				{
+                    var current = node;
+                    Component nextCom = null;
 
-            Console.WriteLine(origin);
-            Console.WriteLine(variables[origin]);
+                    if(components[count + 1] != null){
+                        nextCom = components[count + 1];
+					}
+
+                    if(current.Next == null && nextCom != null) {
+
+                        LinkedListNode<Component> nextNode = new LinkedListNode<Component>(nextCom);
+                        //_linked.AddAfter(current, nextNode);
+                        //_linked.AddAfter(current, nextNode);
+                        //current.Next.Value = nextCom;
+                    }
+				}
+
+                count++;
+            }
+
+            var result = _linked;
+
+                // loop through the linkedlist till you hit last
+
+           
+
+
+
+            //Console.WriteLine(origin);
+            //Console.WriteLine(variables[origin]);
         }
     }
 }
