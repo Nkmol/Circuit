@@ -222,7 +222,7 @@ namespace Models
 
                             // The new node is not in the list, add 'm
                             current.Next.Add(nextNode);
-                            //_linked.AddNode(current);
+                            _linked.AddNode(nextNode);
                             compNode = nextNode;
                             count++;
                         }
