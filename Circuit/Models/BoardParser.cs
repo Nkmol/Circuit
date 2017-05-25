@@ -152,7 +152,7 @@ namespace Models
             var componentNode = _linked.GetFirst();
 
 
-            // check if next node in the array is null
+            // check if next node after first in the array is empty
             if ( _linked.GetFirst().Next.Count() <= 0){
 
                 while(componentNode != null){
@@ -160,8 +160,8 @@ namespace Models
 					var current = componentNode;
 					Component nextCom = null;
 
-					if(components.Count() > count + 1){
-					    nextCom = components[count + 1];
+					if(components.Count() > count){
+					    nextCom = components[count];
 					}
 
                     if(nextCom != null) {
@@ -179,6 +179,57 @@ namespace Models
 
                 // The first line has already been establised in directGraph
                 // Set the other lines
+
+
+                // Check if the startnode is already inside the linkedlist
+                if(_linked.Contains(startnode)){
+                    startnode = _linked.GetNode(startnode);
+                } else {
+                    _linked.AddNode(startnode);
+                }
+
+                var compNode = startnode;
+
+                while(compNode != null) {
+
+                    var current = compNode;
+					Component nextCom = null;
+
+					if (components.Count() > count)
+					{
+						nextCom = components[count];
+                    } else {
+                        compNode = null;
+                    }
+
+                    if (nextCom != null) {
+
+                        GraphNode nextNode = new GraphNode(nextCom);
+
+                        // check if current node alreay exists
+
+						// check if the next node is already in the list
+                        if (_linked.Contains(nextNode))
+						{
+                            // Check if node already has a next pointing to the new node
+                            if(!current.Next.Contains(nextNode)) {
+                                current.Next.Add(nextNode);
+                            }
+                            nextNode = _linked.GetNode(nextNode);
+                            compNode = nextNode;
+                            count++;
+                        } else {
+
+                            // The new node is not in the list, add 'm
+                            current.Next.Add(nextNode);
+                            //_linked.AddNode(current);
+                            compNode = nextNode;
+                            count++;
+                        }
+
+                    }
+
+                }
 
             }
 

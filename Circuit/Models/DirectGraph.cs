@@ -19,9 +19,12 @@ namespace Models
 
         public bool Contains(GraphNode value)
 		{
-            return nodeSet.Contains(value);
+            return nodeSet.Find(n => n.Data.name == value.Data.name) != null;
 		}
 
+        public GraphNode GetNode(GraphNode value){
+            return nodeSet.Find(n => n.Data.name == value.Data.name);
+        }
 
         public GraphNode GetFirst(){
             return this.nodeSet[0];
