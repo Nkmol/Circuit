@@ -17,7 +17,8 @@ namespace Models
         private const char _variableDelimeter = '_';
         private const char _comma = ',';
 
-        private LinkedList<LinkedListNode<Component>> _linked = new LinkedList<LinkedListNode<Component>>();
+        // Create new graph
+        DirectGraph _linked = new DirectGraph();
 
         private Dictionary<string, Component> variables = new Dictionary<string, Component>();
         private bool _startProbLinking = false;
@@ -105,7 +106,7 @@ namespace Models
         private void ParseLinkLine(string line)
         {
             Console.WriteLine("ParseLinkLine");
-            Console.WriteLine(line);
+            //Console.WriteLine(line);
 
             // Separate starting point from the points it will connect with
             var route = line.Split(_delimeter);
@@ -128,17 +129,12 @@ namespace Models
                 seperatedRoute.Add(stop, variables[stop]);
             }
 
-            //Cin: NODE3,NODE7,NODE10
+            //Console.WriteLine(seperatedRoute);
 
-            Console.WriteLine(seperatedRoute);
+            GraphNode startnode = new GraphNode(component);
 
-
-            LinkedListNode<Component> startnode = new LinkedListNode<Component>(component);
-
-            if(_linked.Count() <= 0){
-                _linked.AddFirst(startnode);
-
-                // First node should also be last node 
+            if(_linked.Count <= 0){
+                _linked.AddNode(startnode);
             } 
 
             List<Component> components = new List<Component>();
@@ -151,39 +147,44 @@ namespace Models
 
 
             int count = 0;
-            foreach (var com in components)
-            {
-				foreach (var node in _linked)
-				{
-                    var current = node;
-                    Component nextCom = null;
 
-                    if(components[count + 1] != null){
-                        nextCom = components[count + 1];
+            // get first node
+            var componentNode = _linked.GetFirst();
+
+
+            // check if next node in the array is null
+            if ( _linked.GetFirst().Next.Count() <= 0){
+
+                while(componentNode != null){
+                    
+					var current = componentNode;
+					Component nextCom = null;
+
+					if(components.Count() > count + 1){
+					    nextCom = components[count + 1];
 					}
 
-                    if(current.Next == null && nextCom != null) {
-
-                        LinkedListNode<Component> nextNode = new LinkedListNode<Component>(nextCom);
-                        //_linked.AddAfter(current, nextNode);
-                        //_linked.AddAfter(current, nextNode);
-                        //current.Next.Value = nextCom;
+                    if(nextCom != null) {
+                        GraphNode nextNode = new GraphNode(nextCom);
+                        componentNode.Next.Add(nextNode);
+                        _linked.AddNode(nextNode);
+                        componentNode = nextNode;
+                        count++;
+                        Console.WriteLine(count);
+                    } else {
+                        componentNode = null;
                     }
 				}
+            } else {
 
-                count++;
+                // The first line has already been establised in directGraph
+                // Set the other lines
+
             }
+
 
             var result = _linked;
 
-                // loop through the linkedlist till you hit last
-
-           
-
-
-
-            //Console.WriteLine(origin);
-            //Console.WriteLine(variables[origin]);
         }
     }
 }
