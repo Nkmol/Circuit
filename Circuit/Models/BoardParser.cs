@@ -15,22 +15,26 @@ namespace Models
         private const char _endOfExp = ';';
         private const char _comment = '#';
         private const char _variableDelimeter = '_';
+        private const char _comma = ',';
+
+        // Create new graph
+        DirectGraph _linked = new DirectGraph();
 
         private Dictionary<string, Component> variables = new Dictionary<string, Component>();
         private bool _startProbLinking = false;
 
-        private readonly Dictionary<string, Func<Component>> _componentMapping = 
+        private readonly Dictionary<string, Func<Component>> _componentMapping =
             new Dictionary<string, Func<Component>>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            {"Input", () => new Input()},
-            {"Probe", () => new Probe() },
-            {"OR", () => new OR()},
-            {"NOT", () => new NOT()},
-            {"AND", () => new AND() },
-            {"NOR", () => new NOR() },
-            {"NAND", () => new NAND() },
-            {"XOR", () => new XOR() }
-        };
+            {
+                {"Input", () => new Input()},
+                {"Probe", () => new Probe()},
+                {"OR", () => new OR()},
+                {"NOT", () => new NOT()},
+                {"AND", () => new AND()},
+                {"NOR", () => new NOR()},
+                {"NAND", () => new NAND()},
+                {"XOR", () => new XOR()}
+            };
 
         private readonly char[] _trimMap = new[] {'\t', ' ', _endOfExp};
 
@@ -93,7 +97,7 @@ namespace Models
                 var input = val[1];
 
                 Console.WriteLine($"{compName} {input ?? "LOW"}");
-                test.output = (Bit)Enum.Parse(typeof(Bit), input, true);
+                test.output = (Bit) Enum.Parse(typeof(Bit), input, true);
             }
 
             return test;
@@ -101,7 +105,109 @@ namespace Models
 
         private void ParseLinkLine(string line)
         {
-            
+            //Console.WriteLine(line);
+
+            // Separate starting point from the points it will connect with
+            var route = line.Split(_delimeter);
+
+            // Save node into origin variable
+            var origin = route[0];
+
+            // Seperate and store the points it connect with
+            var stops = route[1].Split(_comma);
+
+            // Store origin and points into a dictionary
+            Dictionary<string, Component> seperatedRoute = new Dictionary<string, Component>();
+            var component = variables[origin];
+            component.name = origin;
+            seperatedRoute.Add(origin, component);
+
+            foreach (var stop in stops)
+            {
+                variables[stop].name = stop;
+                seperatedRoute.Add(stop, variables[stop]);
+            }
+
+            GraphNode startnode = new GraphNode(component);
+
+            if (_linked.Count <= 0)
+            {
+                _linked.AddNode(startnode);
+            }
+
+            List<Component> components = new List<Component>();
+
+            foreach (var textNode in stops)
+            {
+                var cmp = variables[textNode];
+                components.Add(variables[textNode]);
+            }
+
+
+            int count = 0;
+
+            // get first node
+            var componentNode = _linked.GetFirst();
+
+
+            // check if next node after first in the array is empty
+            if (_linked.GetFirst().Next.Count() <= 0)
+            {
+                while (componentNode != null)
+                {
+                    var current = componentNode;
+                    Component nextCom = null;
+
+                    if (components.Count() > count)
+                    {
+                        nextCom = components[count];
+                    }
+
+                    if (nextCom != null)
+                    {
+                        GraphNode nextNode = new GraphNode(nextCom);
+                        componentNode.Next.Add(nextNode);
+                        count++;
+                        Console.WriteLine(count);
+                    }
+                    else
+                    {
+                        componentNode = null;
+                    }
+                }
+            }
+            else
+            {
+                _linked.AddNode(startnode);
+
+                var compNode = startnode;
+
+                while (compNode != null)
+                {
+                    var current = compNode;
+                    Component nextCom = null;
+
+                    if (components.Count() > count)
+                    {
+                        nextCom = components[count];
+                    }
+                    else
+                    {
+                        compNode = null;
+                    }
+
+                    if (nextCom != null)
+                    {
+                        GraphNode nextNode = new GraphNode(nextCom);
+
+                        // The new node is not in the list, add 'm
+                        current.Next.Add(nextNode);
+                        count++;
+                    }
+                }
+            }
+
+            var result = _linked;
         }
     }
 }
