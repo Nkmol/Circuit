@@ -167,8 +167,8 @@ namespace Models
                     if(nextCom != null) {
                         GraphNode nextNode = new GraphNode(nextCom);
                         componentNode.Next.Add(nextNode);
-                        _linked.AddNode(nextNode);
-                        componentNode = nextNode;
+                        //_linked.AddNode(nextNode);
+                        //componentNode = nextNode;
                         count++;
                         Console.WriteLine(count);
                     } else {
@@ -182,11 +182,11 @@ namespace Models
 
 
                 // Check if the startnode is already inside the linkedlist
-                if(_linked.Contains(startnode)){
-                    startnode = _linked.GetNode(startnode);
-                } else {
+                //if(_linked.Contains(startnode)){
+                //   startnode = _linked.GetNode(startnode);
+                //} else {
                     _linked.AddNode(startnode);
-                }
+                //}
 
                 var compNode = startnode;
 
@@ -209,30 +209,27 @@ namespace Models
                         // check if current node alreay exists
 
 						// check if the next node is already in the list
-                        if (_linked.Contains(nextNode))
-						{
+                        //if (_linked.Contains(nextNode))
+						//{
                             // Check if node already has a next pointing to the new node
-                            if(!current.Next.Contains(nextNode)) {
-                                current.Next.Add(nextNode);
-                            }
-                            nextNode = _linked.GetNode(nextNode);
-                            compNode = nextNode;
-                            count++;
-                        } else {
+                            //if(!current.Next.Contains(nextNode)) {
+                            //   current.Next.Add(nextNode);
+                            //}
+                            // nextNode = _linked.GetNode(nextNode);
+                            //compNode = nextNode;
+                            //count++;
+                        //} else {
 
                             // The new node is not in the list, add 'm
                             current.Next.Add(nextNode);
-                            _linked.AddNode(nextNode);
-                            compNode = nextNode;
+                            //_linked.AddNode(nextNode);
+                            //compNode = nextNode;
                             count++;
                         }
 
                     }
 
                 }
-
-            }
-
 
             var result = _linked;
 
