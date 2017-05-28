@@ -23,18 +23,18 @@ namespace Models
         private Dictionary<string, Component> variables = new Dictionary<string, Component>();
         private bool _startProbLinking = false;
 
-        private readonly Dictionary<string, Func<Component>> _componentMapping = 
+        private readonly Dictionary<string, Func<Component>> _componentMapping =
             new Dictionary<string, Func<Component>>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            {"Input", () => new Input()},
-            {"Probe", () => new Probe() },
-            {"OR", () => new OR()},
-            {"NOT", () => new NOT()},
-            {"AND", () => new AND() },
-            {"NOR", () => new NOR() },
-            {"NAND", () => new NAND() },
-            {"XOR", () => new XOR() }
-        };
+            {
+                {"Input", () => new Input()},
+                {"Probe", () => new Probe()},
+                {"OR", () => new OR()},
+                {"NOT", () => new NOT()},
+                {"AND", () => new AND()},
+                {"NOR", () => new NOR()},
+                {"NAND", () => new NAND()},
+                {"XOR", () => new XOR()}
+            };
 
         private readonly char[] _trimMap = new[] {'\t', ' ', _endOfExp};
 
@@ -97,7 +97,7 @@ namespace Models
                 var input = val[1];
 
                 Console.WriteLine($"{compName} {input ?? "LOW"}");
-                test.output = (Bit)Enum.Parse(typeof(Bit), input, true);
+                test.output = (Bit) Enum.Parse(typeof(Bit), input, true);
             }
 
             return test;
@@ -105,12 +105,11 @@ namespace Models
 
         private void ParseLinkLine(string line)
         {
-            Console.WriteLine("ParseLinkLine");
             //Console.WriteLine(line);
 
             // Separate starting point from the points it will connect with
             var route = line.Split(_delimeter);
-			
+
             // Save node into origin variable
             var origin = route[0];
 
@@ -129,13 +128,12 @@ namespace Models
                 seperatedRoute.Add(stop, variables[stop]);
             }
 
-            //Console.WriteLine(seperatedRoute);
-
             GraphNode startnode = new GraphNode(component);
 
-            if(_linked.Count <= 0){
+            if (_linked.Count <= 0)
+            {
                 _linked.AddNode(startnode);
-            } 
+            }
 
             List<Component> components = new List<Component>();
 
@@ -153,86 +151,63 @@ namespace Models
 
 
             // check if next node after first in the array is empty
-            if ( _linked.GetFirst().Next.Count() <= 0){
+            if (_linked.GetFirst().Next.Count() <= 0)
+            {
+                while (componentNode != null)
+                {
+                    var current = componentNode;
+                    Component nextCom = null;
 
-                while(componentNode != null){
-                    
-					var current = componentNode;
-					Component nextCom = null;
+                    if (components.Count() > count)
+                    {
+                        nextCom = components[count];
+                    }
 
-					if(components.Count() > count){
-					    nextCom = components[count];
-					}
-
-                    if(nextCom != null) {
+                    if (nextCom != null)
+                    {
                         GraphNode nextNode = new GraphNode(nextCom);
                         componentNode.Next.Add(nextNode);
-                        //_linked.AddNode(nextNode);
-                        //componentNode = nextNode;
                         count++;
                         Console.WriteLine(count);
-                    } else {
+                    }
+                    else
+                    {
                         componentNode = null;
                     }
-				}
-            } else {
-
-                // The first line has already been establised in directGraph
-                // Set the other lines
-
-
-                // Check if the startnode is already inside the linkedlist
-                //if(_linked.Contains(startnode)){
-                //   startnode = _linked.GetNode(startnode);
-                //} else {
-                    _linked.AddNode(startnode);
-                //}
+                }
+            }
+            else
+            {
+                _linked.AddNode(startnode);
 
                 var compNode = startnode;
 
-                while(compNode != null) {
-
+                while (compNode != null)
+                {
                     var current = compNode;
-					Component nextCom = null;
+                    Component nextCom = null;
 
-					if (components.Count() > count)
-					{
-						nextCom = components[count];
-                    } else {
+                    if (components.Count() > count)
+                    {
+                        nextCom = components[count];
+                    }
+                    else
+                    {
                         compNode = null;
                     }
 
-                    if (nextCom != null) {
-
+                    if (nextCom != null)
+                    {
                         GraphNode nextNode = new GraphNode(nextCom);
 
-                        // check if current node alreay exists
-
-						// check if the next node is already in the list
-                        //if (_linked.Contains(nextNode))
-						//{
-                            // Check if node already has a next pointing to the new node
-                            //if(!current.Next.Contains(nextNode)) {
-                            //   current.Next.Add(nextNode);
-                            //}
-                            // nextNode = _linked.GetNode(nextNode);
-                            //compNode = nextNode;
-                            //count++;
-                        //} else {
-
-                            // The new node is not in the list, add 'm
-                            current.Next.Add(nextNode);
-                            //_linked.AddNode(nextNode);
-                            //compNode = nextNode;
-                            count++;
-                        }
-
+                        // The new node is not in the list, add 'm
+                        current.Next.Add(nextNode);
+                        count++;
                     }
-
                 }
+            }
 
             var result = _linked;
-
         }
     }
 }
