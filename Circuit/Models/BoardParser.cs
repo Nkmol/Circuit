@@ -78,7 +78,7 @@ namespace Models
             var varName = val[0];
             var assignValue = val[1];
 
-            Console.WriteLine($"{varName} {assignValue}");
+//            Console.WriteLine($"{varName} {assignValue}");
 
             var component = ParseComponent(assignValue);
             component.name = varName;
@@ -98,7 +98,7 @@ namespace Models
             {
                 var input = val[1];
 
-                Console.WriteLine($"{compName} {input ?? "LOW"}");
+//                Console.WriteLine($"{compName} {input ?? "LOW"}");
                 component.output = (Bit) Enum.Parse(typeof(Bit), input, true);
             }
 
@@ -114,7 +114,6 @@ namespace Models
             // Split different components and assign it as the next
             foreach (var componentName in val[1].Split(_addition))
             {
-                // TODO make DirectGraph function for this
                 var component = Nodes[componentName];
                 var componentAssign = Nodes[assignTo];
 

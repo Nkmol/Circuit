@@ -8,11 +8,11 @@ namespace Models
 {
     public class Board
     {
-        private DirectGraph<Component> components;
+        public DirectGraph<Component> Components { get; }
 
         public Board(DirectGraph<Component> nodes)
         {
-            this.components = nodes;
+            this.Components = nodes;
         }
     }
 }

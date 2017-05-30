@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Datatypes\Datatypes.csproj">
+      <Project>{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}</Project>
+      <Name>Datatypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{c7696b51-f04c-4cd9-8a39-e5cd8b8ea475}</Project>
       <Name>Models</Name>
