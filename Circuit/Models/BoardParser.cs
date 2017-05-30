@@ -20,7 +20,7 @@ namespace Models
         // Create new graph
         DirectGraph _linked = new DirectGraph();
 
-        private Dictionary<string, Component> variables = new Dictionary<string, Component>();
+        public DirectGraph Nodes = new DirectGraph();
         private bool _startProbLinking = false;
 
         private readonly Dictionary<string, Func<Component>> _componentMapping =
@@ -85,7 +85,7 @@ namespace Models
             var component = ParseComponent(assignValue);
             component.name = varName;
 
-            variables.Add(varName, component);
+            Nodes.Add(varName, component);
         }
 
         private Component ParseComponent(string line)
@@ -107,13 +107,8 @@ namespace Models
             return component;
         }
 
-        public Dictionary<string, GraphNode> nodes = null;
         private void ParseLinkLine(string line)
         {
-            // Make every node into a 
-            // TODO only happen once
-            if(nodes == null) nodes = variables.ToDictionary(x => x.Key, x => new GraphNode(x.Value));
-
             // Split assignment
             var val = line.Split(_delimeter);
             var AssignTo = val[0];
@@ -122,8 +117,8 @@ namespace Models
             foreach (var componentName in val[1].Split(_addition))
             {
                 // TODO make DirectGraph function for this
-                var component = nodes[componentName];
-                var componentAssign = nodes[AssignTo];
+                var component = Nodes[componentName];
+                var componentAssign = Nodes[AssignTo];
 
                 componentAssign.Next.Add(component);
                 component.Previous.Add(componentAssign);
