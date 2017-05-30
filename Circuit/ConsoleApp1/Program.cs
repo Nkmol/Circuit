@@ -13,7 +13,8 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             BoardController controller = new BoardController();
-            controller.Load();
+            controller.LoadBoard();
+            controller.DrawBoard();
             Console.ReadKey();
         }
     }

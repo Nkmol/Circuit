@@ -18,7 +18,9 @@ namespace Models
         private const char _comma = ',';
 
         // Create new graph
-        DirectGraph _linked = new DirectGraph();
+        private DirectGraph _linked = new DirectGraph();
+
+        public Board Board => new Board(_linked);
 
         private Dictionary<string, Component> variables = new Dictionary<string, Component>();
         private bool _startProbLinking = false;

@@ -8,6 +8,11 @@ namespace Models
 {
     public class Board
     {
-        private LinkedList<Component> componenten;
+        private DirectGraph components;
+
+        public Board(DirectGraph nodes)
+        {
+            this.components = nodes;
+        }
     }
 }
