@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7696B51-F04C-4CD9-8A39-E5CD8B8EA475}</ProjectGuid>
+    <ProjectGuid>{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Models</RootNamespace>
-    <AssemblyName>Models</AssemblyName>
+    <RootNamespace>Datatypes</RootNamespace>
+    <AssemblyName>Datatypes</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,9 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,29 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AND.cs" />
-    <Compile Include="Bit.cs" />
-    <Compile Include="Board.cs" />
-    <Compile Include="BoardParser.cs" />
-    <Compile Include="Component.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="NAND.cs" />
-    <Compile Include="NOR.cs" />
-    <Compile Include="NOT.cs" />
-    <Compile Include="OR.cs" />
-    <Compile Include="Port.cs" />
-    <Compile Include="Probe.cs" />
+    <Compile Include="DirectGraph.cs" />
+    <Compile Include="GraphNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XOR.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Datatypes\Datatypes.csproj">
-      <Project>{c5f50c3d-7938-4311-aa88-9fd9f6747bc4}</Project>
-      <Name>Datatypes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
