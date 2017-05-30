@@ -17,10 +17,6 @@ namespace Models
         private const char _variableDelimeter = '_';
         private const char _addition = ',';
 
-        // Create new graph
-        DirectGraph _linked = new DirectGraph();
-
-        public DirectGraph Nodes = new DirectGraph();
         private bool _startProbLinking = false;
 
         private readonly Dictionary<string, Func<Component>> _componentMapping =
@@ -37,6 +33,8 @@ namespace Models
             };
 
         private readonly char[] _trimMap = new[] {'\t', ' ', _endOfExp};
+
+        public DirectGraph<Component> Nodes = new DirectGraph<Component>();
 
         public void Parse(string val)
         {
@@ -111,17 +109,16 @@ namespace Models
         {
             // Split assignment
             var val = line.Split(_delimeter);
-            var AssignTo = val[0];
+            var assignTo = val[0];
 
             // Split different components and assign it as the next
             foreach (var componentName in val[1].Split(_addition))
             {
                 // TODO make DirectGraph function for this
                 var component = Nodes[componentName];
-                var componentAssign = Nodes[AssignTo];
+                var componentAssign = Nodes[assignTo];
 
-                componentAssign.Next.Add(component);
-                component.Previous.Add(componentAssign);
+                componentAssign.LinkNext(component);
             }
         }
     }
