@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Datatypes\Datatypes.csproj">
+      <Project>{c5f50c3d-7938-4311-aa88-9fd9f6747bc4}</Project>
+      <Name>Datatypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helpers\Helpers.csproj">
       <Project>{099a1b21-9e0d-49f3-ab51-f0573daec404}</Project>
       <Name>Helpers</Name>
@@ -51,6 +55,10 @@
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{c7696b51-f04c-4cd9-8a39-e5cd8b8ea475}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Views\Views.csproj">
+      <Project>{a0387f94-8c0b-48a7-9971-12bb0e4c467a}</Project>
+      <Name>Views</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

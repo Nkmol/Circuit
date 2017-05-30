@@ -8,9 +8,9 @@ namespace Models
 {
     public class Board
     {
-        private DirectGraph components;
+        private DirectGraph<Component> components;
 
-        public Board(DirectGraph nodes)
+        public Board(DirectGraph<Component> nodes)
         {
             this.components = nodes;
         }

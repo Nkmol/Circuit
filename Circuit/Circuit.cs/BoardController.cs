@@ -41,7 +41,8 @@ namespace Circuit
 
         public void DrawBoard()
         {
-            boardView = new BoardView(boardParser.Board);
+            var board = new Board(boardParser.Nodes);
+            boardView = new BoardView(board);
             boardView.Draw();
         }
     }
