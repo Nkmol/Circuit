@@ -15,7 +15,7 @@ namespace Models
         private const char _endOfExp = ';';
         private const char _comment = '#';
         private const char _variableDelimeter = '_';
-        private const char _comma = ',';
+        private const char _addition = ',';
 
         // Create new graph
         DirectGraph _linked = new DirectGraph();
@@ -81,15 +81,19 @@ namespace Models
             var assignValue = val[1];
 
             Console.WriteLine($"{varName} {assignValue}");
-            variables.Add(varName, ParseComponent(assignValue));
+
+            var component = ParseComponent(assignValue);
+            component.name = varName;
+
+            variables.Add(varName, component);
         }
 
-        private Component ParseComponent(string component)
+        private Component ParseComponent(string line)
         {
-            var val = component.Split(_variableDelimeter);
+            var val = line.Split(_variableDelimeter);
             var compName = val[0];
 
-            var test = _componentMapping[compName]();
+            var component = _componentMapping[compName]();
 
             // Input definition is optional input
             if (val.Length >= 2)
@@ -97,117 +101,33 @@ namespace Models
                 var input = val[1];
 
                 Console.WriteLine($"{compName} {input ?? "LOW"}");
-                test.output = (Bit) Enum.Parse(typeof(Bit), input, true);
+                component.output = (Bit) Enum.Parse(typeof(Bit), input, true);
             }
 
-            return test;
+            return component;
         }
 
+        public Dictionary<string, GraphNode> nodes = null;
         private void ParseLinkLine(string line)
         {
-            //Console.WriteLine(line);
+            // Make every node into a 
+            // TODO only happen once
+            if(nodes == null) nodes = variables.ToDictionary(x => x.Key, x => new GraphNode(x.Value));
 
-            // Separate starting point from the points it will connect with
-            var route = line.Split(_delimeter);
+            // Split assignment
+            var val = line.Split(_delimeter);
+            var AssignTo = val[0];
 
-            // Save node into origin variable
-            var origin = route[0];
-
-            // Seperate and store the points it connect with
-            var stops = route[1].Split(_comma);
-
-            // Store origin and points into a dictionary
-            Dictionary<string, Component> seperatedRoute = new Dictionary<string, Component>();
-            var component = variables[origin];
-            component.name = origin;
-            seperatedRoute.Add(origin, component);
-
-            foreach (var stop in stops)
+            // Split different components and assign it as the next
+            foreach (var componentName in val[1].Split(_addition))
             {
-                variables[stop].name = stop;
-                seperatedRoute.Add(stop, variables[stop]);
+                // TODO make DirectGraph function for this
+                var component = nodes[componentName];
+                var componentAssign = nodes[AssignTo];
+
+                componentAssign.Next.Add(component);
+                component.Previous.Add(componentAssign);
             }
-
-            GraphNode startnode = new GraphNode(component);
-
-            if (_linked.Count <= 0)
-            {
-                _linked.AddNode(startnode);
-            }
-
-            List<Component> components = new List<Component>();
-
-            foreach (var textNode in stops)
-            {
-                var cmp = variables[textNode];
-                components.Add(variables[textNode]);
-            }
-
-
-            int count = 0;
-
-            // get first node
-            var componentNode = _linked.GetFirst();
-
-
-            // check if next node after first in the array is empty
-            if (_linked.GetFirst().Next.Count() <= 0)
-            {
-                while (componentNode != null)
-                {
-                    var current = componentNode;
-                    Component nextCom = null;
-
-                    if (components.Count() > count)
-                    {
-                        nextCom = components[count];
-                    }
-
-                    if (nextCom != null)
-                    {
-                        GraphNode nextNode = new GraphNode(nextCom);
-                        componentNode.Next.Add(nextNode);
-                        count++;
-                        Console.WriteLine(count);
-                    }
-                    else
-                    {
-                        componentNode = null;
-                    }
-                }
-            }
-            else
-            {
-                _linked.AddNode(startnode);
-
-                var compNode = startnode;
-
-                while (compNode != null)
-                {
-                    var current = compNode;
-                    Component nextCom = null;
-
-                    if (components.Count() > count)
-                    {
-                        nextCom = components[count];
-                    }
-                    else
-                    {
-                        compNode = null;
-                    }
-
-                    if (nextCom != null)
-                    {
-                        GraphNode nextNode = new GraphNode(nextCom);
-
-                        // The new node is not in the list, add 'm
-                        current.Next.Add(nextNode);
-                        count++;
-                    }
-                }
-            }
-
-            var result = _linked;
         }
     }
 }
