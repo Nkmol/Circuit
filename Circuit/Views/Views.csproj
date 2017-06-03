@@ -43,6 +43,7 @@
     <Compile Include="BoardView.cs" />
     <Compile Include="ComponentView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XOR.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Datatypes\Datatypes.csproj">

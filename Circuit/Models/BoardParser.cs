@@ -9,6 +9,7 @@ namespace Models
     using System.Security.Policy;
     using System.Xml;
 
+    // TODO Board Builder maken
     public class BoardParser
     {
         private const char _delimeter = ':';
@@ -19,6 +20,7 @@ namespace Models
 
         private bool _startProbLinking = false;
 
+        // TODO Component Factory maken
         private readonly Dictionary<string, Func<Component>> _componentMapping =
             new Dictionary<string, Func<Component>>(StringComparer.InvariantCultureIgnoreCase)
             {

@@ -2,42 +2,38 @@
 
 namespace Views
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Models;
 
     public class BoardView : ComponentView
     {
         private Board _board = null;
+
         public BoardView(Board nodes)
         {
             this._board = nodes;
         }
 
+        // Decorate pattern
         public void Draw()
         {
-            var firstNodes = _board.Components.First;
-
-            foreach (var node in firstNodes)
+            foreach (var node in _board.Components)
             {
-                ProcessComponent(node);
+                var component = node.Value;
+
+                if (component.Next?.Count > 0)
+                {
+                    Console.Write($"{component.Data.name} [{component.Data.GetType().Name}, {(int)component.Data.output}]: ");
+
+                    foreach (var nextNode in component.Next)
+                    {
+                        Console.Write(nextNode.Data.name + " ");
+                    }
+
+                    Console.WriteLine();
+                }
             }
-        }
-
-        private void ProcessComponent(GraphNode<Component> node)
-        {
-            Console.WriteLine(node.Data.name);
-
-            if (node.Next?.Count <= 0)
-                return;
-
-            foreach (var nextNode in node.Next)
-            {
-                ProcessComponent(nextNode);
-            }
-        }
-
-        private void DrawComponent()
-        {
-            
         }
     }
 }
