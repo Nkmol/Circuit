@@ -6,19 +6,24 @@ using System.Text;
 namespace Circuit
 {
     using Models;
+    using Views;
 
     public class BoardController
     {
+        private BoardParser boardParser =  null;
+        private BoardView boardView = null;
+
         public BoardController()
         {
             
         }
 
-        public void Load()
+        public void LoadBoard()
         {
             var path = @"C:\Users\srm\Desktop\Circuit1_FullAdder.txt";
             var reader = new FileReader(path);
-            var boardParser = new BoardParser();
+
+            boardParser = new BoardParser();
 
             try
             {
@@ -27,12 +32,18 @@ namespace Circuit
                     boardParser.Parse(line);
                 }
 
-                
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public void DrawBoard()
+        {
+            var board = new Board(boardParser.Nodes);
+            boardView = new BoardView(board);
+            boardView.Draw();
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Models
 {
     public class Board
     {
-        private LinkedList<Component> componenten;
+        public DirectGraph<Component> Components { get; }
+
+        public Board(DirectGraph<Component> nodes)
+        {
+            this.Components = nodes;
+        }
     }
 }
