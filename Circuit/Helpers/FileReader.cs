@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Helpers
+﻿namespace Helpers
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
 
     public class FileReader
@@ -14,20 +10,26 @@ namespace Helpers
 
         public FileReader(string path)
         {
-            this._path = path;
+            _path = path;
         }
 
         public IEnumerable<string> ReadLine()
         {
-            if(!Exists())
+            if (!Exists())
+            {
                 throw new Exception("File does not exists.");
+            }
 
             // TODO ".txt" is specific to our implementation
-            if(!HasExtension(".txt"))
-                   throw new Exception("Wrong extension, only '.txt' is supported.");
+            if (!HasExtension(".txt"))
+            {
+                throw new Exception("Wrong extension, only '.txt' is supported.");
+            }
 
-            if(IsEmpty())
-                   throw new Exception("This file is empty.");
+            if (IsEmpty())
+            {
+                throw new Exception("This file is empty.");
+            }
 
             string line;
             using (var reader = File.OpenText(_path))

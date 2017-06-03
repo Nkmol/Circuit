@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models
+﻿namespace Models
 {
-    using System.Security.Policy;
-    using System.Xml;
+    using System;
+    using System.Collections.Generic;
 
     // TODO Board Builder maken
     public class BoardParser
@@ -17,8 +11,6 @@ namespace Models
         private const char _comment = '#';
         private const char _variableDelimeter = '_';
         private const char _addition = ',';
-
-        private bool _startProbLinking = false;
 
         // TODO Component Factory maken
         private readonly Dictionary<string, Func<Component>> _componentMapping =
@@ -34,7 +26,9 @@ namespace Models
                 {"XOR", () => new XOR()}
             };
 
-        private readonly char[] _trimMap = new[] {'\t', ' ', _endOfExp};
+        private readonly char[] _trimMap = {'\t', ' ', _endOfExp};
+
+        private bool _startProbLinking;
 
         public DirectGraph<Component> Nodes = new DirectGraph<Component>();
 
