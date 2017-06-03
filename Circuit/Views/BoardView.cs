@@ -16,7 +16,7 @@ namespace Views
         }
 
         // Decorate pattern
-        public void Draw()
+        public new void Draw()
         {
             foreach (var node in _board.Components)
             {
