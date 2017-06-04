@@ -5,7 +5,8 @@ namespace Models
 {
     public class ComponentFactory
     {
-        private string _assembly = "Models.";
+        private string _assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+        private string _seperator = ".";
 
         private Dictionary<string, Type> _types;
 
@@ -26,7 +27,7 @@ namespace Models
 
 		public Type GetType(string typeName)
 		{
-			var type = Type.GetType(_assembly + typeName, true);
+            var type = Type.GetType(_assembly + _seperator + typeName, true);
 			if (type != null) return type;
 			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
 			{
