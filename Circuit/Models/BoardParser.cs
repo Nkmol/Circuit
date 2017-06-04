@@ -77,7 +77,7 @@
 //            Console.WriteLine($"{varName} {assignValue}");
 
             var component = ParseComponent(assignValue);
-            component.name = varName;
+            component.Name = varName;
 
             Nodes.Add(varName, component);
         }
@@ -95,7 +95,7 @@
                 var input = val[1];
 
 //                Console.WriteLine($"{compName} {input ?? "LOW"}");
-                component.output = (Bit) Enum.Parse(typeof(Bit), input, true);
+                component.Output = (Bit) Enum.Parse(typeof(Bit), input, true);
             }
 
             return component;

@@ -2,8 +2,8 @@
 {
     public abstract class Component
     {
-        public string description;
-        public string name;
-        public Bit output = Bit.LOW;
+        public string Description;
+        public string Name;
+        public Bit Output { get; set; } = Bit.LOW;
     }
 }

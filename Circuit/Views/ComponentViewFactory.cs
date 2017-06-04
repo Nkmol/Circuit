@@ -8,8 +8,8 @@
         {
             return new ComponentView
             {
-                Name = component.name,
-                Output = (int) component.output,
+                Name = component.Name,
+                Output = (int) component.Output,
                 Type = component.GetType().Name
             };
         }
