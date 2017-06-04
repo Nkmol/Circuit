@@ -19,7 +19,7 @@ namespace Models
 			_types[name] = type;
 		}
 
-        public bool exists(string name)
+        public bool Exists(string name)
         {
             return _types.ContainsKey(name);
         }

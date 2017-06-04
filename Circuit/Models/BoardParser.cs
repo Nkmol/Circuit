@@ -79,7 +79,7 @@
 
             Type t = _componentFactory.GetType(compName);
 
-            if (!_componentFactory.exists(compName)){
+            if (!_componentFactory.Exists(compName)){
                 _componentFactory.AddNodeType(compName, t);
             }
 
