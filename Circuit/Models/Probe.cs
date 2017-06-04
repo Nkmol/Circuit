@@ -1,6 +1,10 @@
-﻿namespace Models
+﻿using System;
+namespace Models
 {
-    public class Probe : Component
+    public class PROBE : Component
     {
+        public PROBE()
+        {
+        }
     }
 }

@@ -48,15 +48,16 @@
     <Compile Include="Board.cs" />
     <Compile Include="BoardParser.cs" />
     <Compile Include="Component.cs" />
-    <Compile Include="Input.cs" />
     <Compile Include="NAND.cs" />
     <Compile Include="NOR.cs" />
     <Compile Include="NOT.cs" />
     <Compile Include="OR.cs" />
     <Compile Include="Port.cs" />
-    <Compile Include="Probe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XOR.cs" />
+    <Compile Include="ComponentFactory.cs" />
+    <Compile Include="INPUT.cs" />
+    <Compile Include="PROBE.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

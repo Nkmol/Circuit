@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿﻿namespace Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,19 +12,8 @@
         private const char _variableDelimeter = '_';
         private const char _addition = ',';
 
-        // TODO Component Factory maken
-        private readonly Dictionary<string, Func<Component>> _componentMapping =
-            new Dictionary<string, Func<Component>>(StringComparer.InvariantCultureIgnoreCase)
-            {
-                {"Input", () => new Input()},
-                {"Probe", () => new Probe()},
-                {"OR", () => new OR()},
-                {"NOT", () => new NOT()},
-                {"AND", () => new AND()},
-                {"NOR", () => new NOR()},
-                {"NAND", () => new NAND()},
-                {"XOR", () => new XOR()}
-            };
+
+        private ComponentFactory _componentFactory = new ComponentFactory();
 
         private readonly char[] _trimMap = {'\t', ' ', _endOfExp};
 
@@ -87,7 +76,14 @@
             var val = line.Split(_variableDelimeter);
             var compName = val[0];
 
-            var component = _componentMapping[compName]();
+
+            Type t = _componentFactory.GetType(compName);
+
+            if (!_componentFactory.exists(compName)){
+                _componentFactory.AddNodeType(compName, t);
+            }
+
+            var component = _componentFactory.CreateComponent(compName);
 
             // Input definition is optional input
             if (val.Length >= 2)

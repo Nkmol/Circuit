@@ -1,6 +1,10 @@
-﻿namespace Models
+﻿using System;
+namespace Models
 {
-    public class Input : Component
+    public class INPUT : Component
     {
+        public INPUT()
+        {
+        }
     }
 }
