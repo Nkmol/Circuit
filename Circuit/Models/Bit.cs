@@ -8,7 +8,7 @@ namespace Models
 {
     [Flags]
     public enum Bit  {
-        HIGH = 0,
-        LOW = 1
+        HIGH = 1,
+        LOW = 0
     }
 }

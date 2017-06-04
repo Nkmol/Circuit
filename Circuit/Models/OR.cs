@@ -8,5 +8,16 @@ namespace Models
 {
     class OR : Port
     {
+        public override void Calculate()
+        {
+            if (Inputs.Select(x => x == Bit.HIGH).Any())
+            {
+                output = Bit.HIGH;
+            }
+            else
+            {
+                output = Bit.LOW;
+            }
+        }
     }
 }

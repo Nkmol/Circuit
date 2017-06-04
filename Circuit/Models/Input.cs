@@ -8,6 +8,9 @@ namespace Models
 {
     public class Input : Component
     {
-
+        public override void Calculate()
+        {
+            output = output;
+        }
     }
 }

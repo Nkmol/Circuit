@@ -8,5 +8,9 @@ namespace Models
 {
     public class Probe : Component
     {
+        public override void Calculate()
+        {
+            output = Inputs.FirstOrDefault();
+        }
     }
 }
