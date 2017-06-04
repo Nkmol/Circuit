@@ -5,8 +5,8 @@ namespace Models
 {
     public class ComponentFactory
     {
-        private string _assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-        private string _seperator = ".";
+        private readonly string _assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+        private const string _seperator = ".";
 
         private Dictionary<string, Type> _types;
 
