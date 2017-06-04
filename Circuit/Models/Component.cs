@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Models
+﻿namespace Models
 {
     public abstract class Component
     {
-        public string name;
-        public string description;
-        public Bit output = Bit.LOW;
+        public string Description;
+        public string Name;
+        public Bit Output { get; set; } = Bit.LOW;
     }
 }

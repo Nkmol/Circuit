@@ -1,22 +1,14 @@
-﻿using Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Circuit
+﻿namespace Circuit
 {
+    using System;
+    using Helpers;
     using Models;
     using Views;
 
     public class BoardController
     {
-        private BoardParser boardParser =  null;
-        private BoardView boardView = null;
-
-        public BoardController()
-        {
-            
-        }
+        private BoardParser boardParser;
+        private BoardView boardView;
 
         public void LoadBoard()
         {
@@ -31,7 +23,6 @@ namespace Circuit
                 {
                     boardParser.Parse(line);
                 }
-
             }
             catch (Exception e)
             {

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Models
+﻿namespace Models
 {
+    using System.Collections.Generic;
+
     public class GraphNode<T>
     {
-		public List<GraphNode<T>> Next;
+        public List<GraphNode<T>> Next;
         public List<GraphNode<T>> Previous;
 
-		public T Data { get; set; }
-
-        public GraphNode(T value) {
+        public GraphNode(T value)
+        {
             Next = new List<GraphNode<T>>();
             Previous = new List<GraphNode<T>>();
-            this.Data = value;
+            Data = value;
         }
+
+        public T Data { get; set; }
 
         public void LinkNext(GraphNode<T> value)
         {

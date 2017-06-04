@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="BoardView.cs" />
     <Compile Include="ComponentView.cs" />
+    <Compile Include="ComponentViewFactory.cs" />
+    <Compile Include="IDrawAble.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
