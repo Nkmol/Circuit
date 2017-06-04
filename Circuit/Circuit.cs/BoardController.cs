@@ -10,8 +10,9 @@ namespace Circuit
 
     public class BoardController
     {
-        private BoardParser boardParser =  null;
-        private BoardView boardView = null;
+        private BoardParser _boardParser =  null;
+        private BoardView _boardView = null;
+        private Board _board = null;
 
         public BoardController()
         {
@@ -23,13 +24,13 @@ namespace Circuit
             var path = @"C:\Users\srm\Desktop\Circuit1_FullAdder.txt";
             var reader = new FileReader(path);
 
-            boardParser = new BoardParser();
+            _boardParser = new BoardParser();
 
             try
             {
                 foreach (var line in reader.ReadLine())
                 {
-                    boardParser.Parse(line);
+                    _boardParser.Parse(line);
                 }
 
             }
@@ -37,13 +38,19 @@ namespace Circuit
             {
                 Console.WriteLine(e);
             }
+
+            _board = new Board(_boardParser.Nodes);
+        }
+
+        public void StartSimulation()
+        {
+            _board.Start();
         }
 
         public void DrawBoard()
         {
-            var board = new Board(boardParser.Nodes);
-            boardView = new BoardView(board);
-            boardView.Draw();
+            _boardView = new BoardView(_board);
+            _boardView.Draw();
         }
     }
 }

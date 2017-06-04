@@ -11,5 +11,9 @@ namespace Models
         public string name;
         public string description;
         public Bit output = Bit.LOW;
+
+        public List<Bit> Inputs { get; } = new List<Bit>();
+
+        public abstract void Calculate();
     }
 }

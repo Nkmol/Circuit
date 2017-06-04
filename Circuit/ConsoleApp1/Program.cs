@@ -14,6 +14,7 @@ namespace ConsoleApp1
         {
             BoardController controller = new BoardController();
             controller.LoadBoard();
+            controller.StartSimulation();
             controller.DrawBoard();
             Console.ReadKey();
         }
