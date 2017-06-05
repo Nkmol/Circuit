@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Models
+﻿namespace Models
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     public class DirectGraph<T> : Dictionary<string, GraphNode<T>>
     {
         public List<GraphNode<T>> First
         {
-            get
-            {
-                return this.Values.Where(x => x.Previous.Count <= 0).ToList();
-            }
+            get { return Values.Where(x => x.Previous.Count <= 0).ToList(); }
         }
 
         public void Add(string key, T value)
@@ -31,19 +26,27 @@ namespace Models
         private GraphNode<T> ParseLanes(List<GraphNode<T>> nodes, GraphNode<T> lookFor)
         {
             if (nodes?.Any() == false || lookFor == null)
+            {
                 return null;
+            }
 
             foreach (var node in nodes)
             {
                 if (node == lookFor)
+                {
                     return node;
+                }
 
                 if (node.Previous?.Any() == false)
+                {
                     continue;
+                }
 
                 var result = ParseLanes(node.Previous, lookFor);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;

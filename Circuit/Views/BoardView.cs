@@ -1,34 +1,34 @@
-﻿using System;
-
-namespace Views
+﻿namespace Views
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System;
     using Models;
 
-    public class BoardView : ComponentView
+    public class BoardView : IDrawAble
     {
-        private Board _board = null;
+        private readonly Board _board;
 
         public BoardView(Board nodes)
         {
-            this._board = nodes;
+            _board = nodes;
         }
 
-        // Decorate pattern
-        public new void Draw()
+        public void Draw()
         {
+            var factory = new ComponentViewFactory();
+
             foreach (var node in _board.Components)
             {
                 var component = node.Value;
 
                 if (component.Next?.Count > 0)
                 {
-                    Console.Write($"{component.Data.name} [{component.Data.GetType().Name}, {(int)component.Data.output}]: ");
+                    factory.Create(component.Data).Draw();
+                    Console.Write(": ");
 
                     foreach (var nextNode in component.Next)
                     {
-                        Console.Write(nextNode.Data.name + " ");
+                        factory.Create(nextNode.Data).Draw();
+                        Console.Write(" ");
                     }
 
                     Console.WriteLine();

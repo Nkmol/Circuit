@@ -37,10 +37,10 @@ namespace Models
 
             if (Components.LookBack(cur) != null)
             {
-                throw new Exception($"A loop has occured. '{nodeCur.name}' to '{nodeNext.name}'");
+                throw new Exception($"A loop has occured. From '{nodeCur.Name}'");
             }
 
-            nodeNext.Inputs.Add(nodeCur.output);
+            nodeNext.Inputs.Add(nodeCur.Output);
 
             nodeNext.Calculate();
         }

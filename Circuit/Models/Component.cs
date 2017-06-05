@@ -8,9 +8,9 @@ namespace Models
 {
     public abstract class Component
     {
-        public string name;
-        public string description;
-        public Bit output = Bit.LOW;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Bit Output { get; set; } = Bit.LOW;
 
         public List<Bit> Inputs { get; } = new List<Bit>();
 
