@@ -17,32 +17,31 @@ namespace Models
 
         public void Start()
         {
-            ParseLanes(Components.First);
+            Components.Cycle(node =>
+            {
+                CheckLoop(node);
+
+                node.Next.ForEach(next =>
+                {
+                    var nextNode = next.Data;
+                    nextNode.Inputs.Add(node.Data.Output);
+                    nextNode.Calculate();
+                });
+            });
         }
 
-        private void ParseLanes(List<GraphNode<Component>> lanes)
+        public void CheckLoop(GraphNode<Component> node)
         {
-            foreach (var node in lanes)
+            if (node.Previous.Any())
             {
-                node.Next.ForEach(x => ParseComponent(node, x));
+                Components.Cycle(curNode =>
+                {
+                    if (curNode == node)
+                        throw new Exception($"A loop has occured.");
 
-                ParseLanes(node.Next);
+                }, DirectGraph<Component>.Direction.Backwards
+                    , node.Previous);
             }
-        }
-
-        private void ParseComponent(GraphNode<Component> cur, GraphNode<Component> next)
-        {
-            var nodeCur = cur.Data;
-            var nodeNext = next.Data;
-
-            if (Components.LookBack(cur) != null)
-            {
-                throw new Exception($"A loop has occured. From '{nodeCur.Name}'");
-            }
-
-            nodeNext.Inputs.Add(nodeCur.Output);
-
-            nodeNext.Calculate();
         }
     }
 }
