@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     // TODO Board Builder maken
     public class BoardParser
@@ -29,6 +30,7 @@
 
             #endregion
 
+            #region Early exit
             // Don't parse comment lines
             if (val.StartsWith(_comment.ToString()))
             {
@@ -41,6 +43,7 @@
                 _startProbLinking = true;
                 return;
             }
+            #endregion
 
             if (_startProbLinking)
             {
@@ -61,31 +64,15 @@
             var varName = val[0];
             var assignValue = val[1];
 
-//            Console.WriteLine($"{varName} {assignValue}");
+            var componentProps = ParseComponent(assignValue);
 
-            var component = ParseComponent(assignValue);
-            component.Name = varName;
-
-            BoardBuilder.addNode(varName, component);
+            BoardBuilder.AddComponent(varName, componentProps[0], componentProps.ElementAtOrDefault(1));
         }
 
-        private Component ParseComponent(string line)
+        private string[] ParseComponent(string line)
         {
-            var val = line.Split(_variableDelimeter);
-            var compName = val[0];
-            var component = BoardBuilder.Create(compName);
-
-
-            // Input definition is optional input
-            if (val.Length >= 2)
-            {
-                var input = val[1];
-
-//                Console.WriteLine($"{compName} {input ?? "LOW"}");
-                component.Output = (Bit) Enum.Parse(typeof(Bit), input, true);
-            }
-
-            return component;
+            // [0] is component name, [1] is optional input value indication
+            return line.Split(_variableDelimeter);
         }
 
         private void ParseLinkLine(string line)

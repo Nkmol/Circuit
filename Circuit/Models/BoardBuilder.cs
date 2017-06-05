@@ -4,44 +4,32 @@ namespace Models
     public class BoardBuilder
     {
 
-        private DirectGraph<Component> _nodes;
-        private GraphNode<Component> _current;
-        private GraphNode<Component> _componentAssign;
+        private readonly DirectGraph<Component> _nodes;
+        private readonly ComponentFactory _componentFactory = new ComponentFactory();
 
-        private ComponentFactory _componentFactory = new ComponentFactory();
-
-
-        public DirectGraph<Component> Nodes {
-            get {
-                return this._nodes;
-            }
-        }
+        public Board Board => new Board(_nodes);
 
         public BoardBuilder()
         {
             _nodes =  new DirectGraph<Component>();
         }
 
-        public void Link(string compName, string assignTo) {
-			_current = _nodes[compName];
-            _componentAssign = _nodes[assignTo];
-            this._componentAssign.LinkNext(_current);
+        public void Link(string compName, string assignTo)
+        {
+            var component = _nodes[compName];
+
+			_nodes[assignTo].LinkNext(component);
         }
 
-        public void addNode(string varName, Component component)
+        public void AddComponent(string varName, string componentName, string input = "LOW")
         {
-            this._nodes.Add(varName, component);
+            input = input ?? "LOW"; // Fix nullable input
+
+            var component = _componentFactory.Create(componentName);
+            component.Name = varName;
+            component.Output = (Bit)Enum.Parse(typeof(Bit), input, true);
+
+            _nodes.Add(varName, component);
         }
-
-        public Component Create(string compName)
-        {
-			Type t = _componentFactory.GetType(compName);
-
-			if (!_componentFactory.Exists(compName)){
-			    _componentFactory.AddNodeType(compName, t);
-			}
-
-			return _componentFactory.CreateComponent(compName);
-		}
     }
 }
