@@ -76,6 +76,7 @@
             var val = line.Split(_variableDelimeter);
             var compName = val[0];
 
+            // TODO Create with just giving a string
             Type t = _componentFactory.GetType(compName);
 
             if (!_componentFactory.Exists(compName)){
