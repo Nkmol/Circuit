@@ -24,17 +24,25 @@ namespace Models
         {
             foreach (var node in lanes)
             {
-                node.Next.ForEach(x => ParseComponent(node.Data, x.Data));
+                node.Next.ForEach(x => ParseComponent(node, x));
 
                 ParseLanes(node.Next);
             }
         }
 
-        private void ParseComponent(Component cur, Component next)
+        private void ParseComponent(GraphNode<Component> cur, GraphNode<Component> next)
         {
-            next.Inputs.Add(cur.output);
+            var nodeCur = cur.Data;
+            var nodeNext = next.Data;
 
-            next.Calculate();
+            if (Components.LookBack(cur) != null)
+            {
+                throw new Exception($"A loop has occured. '{nodeCur.name}' to '{nodeNext.name}'");
+            }
+
+            nodeNext.Inputs.Add(nodeCur.output);
+
+            nodeNext.Calculate();
         }
     }
 }

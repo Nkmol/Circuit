@@ -36,6 +36,7 @@ namespace Circuit
             }
             catch (Exception e)
             {
+                // TODO Move to view
                 Console.WriteLine(e);
             }
 
@@ -44,7 +45,15 @@ namespace Circuit
 
         public void StartSimulation()
         {
-            _board.Start();
+            try
+            {
+                _board.Start();
+            }
+            catch (Exception e)
+            {
+                // TODO Move to view
+                Console.WriteLine(e.Message);
+            }
         }
 
         public void DrawBoard()
