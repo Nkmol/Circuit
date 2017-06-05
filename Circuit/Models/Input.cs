@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Input : Component
+    public class INPUT : Component
     {
         public override void Calculate()
         {

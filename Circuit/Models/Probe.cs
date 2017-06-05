@@ -2,7 +2,7 @@
 {
     using System.Linq;
 
-    public class Probe : Component
+    public class PROBE : Component
     {
         public override void Calculate()
         {
