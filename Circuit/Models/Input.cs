@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Models
 {
     public class INPUT : Component
     {
-        public INPUT()
+        public override void Calculate()
         {
+            Output = Output;
         }
     }
 }

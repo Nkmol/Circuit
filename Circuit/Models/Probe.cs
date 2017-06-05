@@ -1,10 +1,12 @@
-﻿using System;
-namespace Models
+﻿namespace Models
 {
+    using System.Linq;
+
     public class PROBE : Component
     {
-        public PROBE()
+        public override void Calculate()
         {
+            Output = Inputs.FirstOrDefault();
         }
     }
 }

@@ -9,6 +9,7 @@
         {
             var controller = new BoardController();
             controller.LoadBoard();
+            controller.StartSimulation();
             controller.DrawBoard();
             Console.ReadKey();
         }

@@ -35,5 +35,10 @@
                 }
             }
         }
+
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }
