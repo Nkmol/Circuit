@@ -9,6 +9,7 @@
     {
         private BoardParser boardParser;
         private BoardView boardView;
+        private Board _board;
 
         public void LoadBoard()
         {
@@ -26,15 +27,30 @@
             }
             catch (Exception e)
             {
+                // TODO Move to view
                 Console.WriteLine(e);
             }
+
+            // TODO Improve this call
+            _board = boardParser.BoardBuilder.Board;
         }
+
+        public void StartSimulation()
+         {
+             try
+             {
+                 _board.Start();
+             }
+             catch (Exception e)
+             {
+                 // TODO Move to view
+                 Console.WriteLine(e.Message);
+             }
+          }
 
         public void DrawBoard()
         {
-            // TODO Improve this call
-            var board = boardParser.BoardBuilder.Board;
-            boardView = new BoardView(board);
+            boardView = new BoardView(_board);
             boardView.Draw();
         }
     }
