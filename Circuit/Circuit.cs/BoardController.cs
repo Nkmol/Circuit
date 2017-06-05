@@ -1,38 +1,29 @@
-﻿using Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Circuit
+﻿namespace Circuit
 {
+    using System;
+    using Helpers;
     using Models;
     using Views;
 
     public class BoardController
     {
-        private BoardParser _boardParser =  null;
-        private BoardView _boardView = null;
-        private Board _board = null;
-
-        public BoardController()
-        {
-            
-        }
+        private BoardParser boardParser;
+        private BoardView boardView;
+        private Board _board;
 
         public void LoadBoard()
         {
             var path = @"C:\Users\srm\Desktop\Circuit1_FullAdder.txt";
             var reader = new FileReader(path);
 
-            _boardParser = new BoardParser();
+            boardParser = new BoardParser();
 
             try
             {
                 foreach (var line in reader.ReadLine())
                 {
-                    _boardParser.Parse(line);
+                    boardParser.Parse(line);
                 }
-
             }
             catch (Exception e)
             {
@@ -40,26 +31,27 @@ namespace Circuit
                 Console.WriteLine(e);
             }
 
-            _board = new Board(_boardParser.Nodes);
+            // TODO Improve this call
+            _board = boardParser.BoardBuilder.Board;
         }
 
         public void StartSimulation()
-        {
-            try
-            {
-                _board.Start();
-            }
-            catch (Exception e)
-            {
-                // TODO Move to view
-                Console.WriteLine(e.Message);
-            }
-        }
+         {
+             try
+             {
+                 _board.Start();
+             }
+             catch (Exception e)
+             {
+                 // TODO Move to view
+                 Console.WriteLine(e.Message);
+             }
+          }
 
         public void DrawBoard()
         {
-            _boardView = new BoardView(_board);
-            _boardView.Draw();
+            boardView = new BoardView(_board);
+            boardView.Draw();
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿﻿namespace Models
+﻿﻿﻿namespace Models
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     // TODO Board Builder maken
     public class BoardParser
@@ -12,14 +13,11 @@
         private const char _variableDelimeter = '_';
         private const char _addition = ',';
 
-
-        private ComponentFactory _componentFactory = new ComponentFactory();
+        public BoardBuilder BoardBuilder = new BoardBuilder();
 
         private readonly char[] _trimMap = {'\t', ' ', _endOfExp};
 
         private bool _startProbLinking;
-
-        public DirectGraph<Component> Nodes = new DirectGraph<Component>();
 
         public void Parse(string val)
         {
@@ -32,6 +30,7 @@
 
             #endregion
 
+            #region Early exit
             // Don't parse comment lines
             if (val.StartsWith(_comment.ToString()))
             {
@@ -44,10 +43,12 @@
                 _startProbLinking = true;
                 return;
             }
+            #endregion
 
             if (_startProbLinking)
             {
                 ParseLinkLine(val);
+
             }
             else
             {
@@ -63,53 +64,27 @@
             var varName = val[0];
             var assignValue = val[1];
 
-//            Console.WriteLine($"{varName} {assignValue}");
+            var componentProps = ParseComponent(assignValue);
 
-            var component = ParseComponent(assignValue);
-            component.Name = varName;
-
-            Nodes.Add(varName, component);
+            BoardBuilder.AddComponent(varName, componentProps[0], componentProps.ElementAtOrDefault(1));
         }
 
-        private Component ParseComponent(string line)
+        private string[] ParseComponent(string line)
         {
-            var val = line.Split(_variableDelimeter);
-            var compName = val[0];
-
-            // TODO Create with just giving a string
-            Type t = _componentFactory.GetType(compName);
-
-            if (!_componentFactory.Exists(compName)){
-                _componentFactory.AddNodeType(compName, t);
-            }
-
-            var component = _componentFactory.CreateComponent(compName);
-
-            // Input definition is optional input
-            if (val.Length >= 2)
-            {
-                var input = val[1];
-
-//                Console.WriteLine($"{compName} {input ?? "LOW"}");
-                component.Output = (Bit) Enum.Parse(typeof(Bit), input, true);
-            }
-
-            return component;
+            // [0] is component name, [1] is optional input value indication
+            return line.Split(_variableDelimeter);
         }
 
         private void ParseLinkLine(string line)
         {
-            // Split assignment
-            var val = line.Split(_delimeter);
+			// Split assignment
+			var val = line.Split(_delimeter);
             var assignTo = val[0];
 
             // Split different components and assign it as the next
             foreach (var componentName in val[1].Split(_addition))
             {
-                var component = Nodes[componentName];
-                var componentAssign = Nodes[assignTo];
-
-                componentAssign.LinkNext(component);
+                BoardBuilder.Link(componentName, assignTo);
             }
         }
     }
