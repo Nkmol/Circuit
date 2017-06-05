@@ -32,7 +32,7 @@
 
         public void DrawBoard()
         {
-            var board = new Board(boardParser.Nodes);
+            var board = new Board(boardParser.BoardBuilder.Nodes);
             boardView = new BoardView(board);
             boardView.Draw();
         }

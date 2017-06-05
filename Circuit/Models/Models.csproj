@@ -58,6 +58,7 @@
     <Compile Include="ComponentFactory.cs" />
     <Compile Include="INPUT.cs" />
     <Compile Include="PROBE.cs" />
+    <Compile Include="BoardBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

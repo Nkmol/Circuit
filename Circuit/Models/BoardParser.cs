@@ -12,14 +12,11 @@
         private const char _variableDelimeter = '_';
         private const char _addition = ',';
 
-
-        private ComponentFactory _componentFactory = new ComponentFactory();
+        public BoardBuilder BoardBuilder = new BoardBuilder();
 
         private readonly char[] _trimMap = {'\t', ' ', _endOfExp};
 
         private bool _startProbLinking;
-
-        public DirectGraph<Component> Nodes = new DirectGraph<Component>();
 
         public void Parse(string val)
         {
@@ -48,6 +45,7 @@
             if (_startProbLinking)
             {
                 ParseLinkLine(val);
+
             }
             else
             {
@@ -68,21 +66,15 @@
             var component = ParseComponent(assignValue);
             component.Name = varName;
 
-            Nodes.Add(varName, component);
+            BoardBuilder.addNode(varName, component);
         }
 
         private Component ParseComponent(string line)
         {
             var val = line.Split(_variableDelimeter);
             var compName = val[0];
+            var component = BoardBuilder.Create(compName);
 
-            Type t = _componentFactory.GetType(compName);
-
-            if (!_componentFactory.Exists(compName)){
-                _componentFactory.AddNodeType(compName, t);
-            }
-
-            var component = _componentFactory.CreateComponent(compName);
 
             // Input definition is optional input
             if (val.Length >= 2)
@@ -98,17 +90,14 @@
 
         private void ParseLinkLine(string line)
         {
-            // Split assignment
-            var val = line.Split(_delimeter);
+			// Split assignment
+			var val = line.Split(_delimeter);
             var assignTo = val[0];
 
             // Split different components and assign it as the next
             foreach (var componentName in val[1].Split(_addition))
             {
-                var component = Nodes[componentName];
-                var componentAssign = Nodes[assignTo];
-
-                componentAssign.LinkNext(component);
+                BoardBuilder.Link(componentName, assignTo);
             }
         }
     }
