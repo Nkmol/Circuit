@@ -24,19 +24,23 @@ namespace Models
         {
             if (CheckConnection())
             {
-                var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is INPUT && node.IsConnected);
+                var inputs = Components.Select(pair => pair.Value).Where(node => node is INPUT && node.IsConnected);
 
-                // TODO Able to call without yield
+                // Depth first search for every input
                 var cyclenr = 0;
-                foreach (var cycle in Components.DepthFirstCycle(firstInput))
+                foreach (var input in inputs)
                 {
-                    Console.WriteLine($"--- Cycle {cyclenr} ---");
-                    foreach (var node in cycle)
+                    // TODO Able to call without yield
+                    foreach (var cycle in Components.DepthFirstCycle(input))
                     {
-                        Console.WriteLine("   " + node.Name);
+                        Console.WriteLine($"--- Cycle {cyclenr} ---");
+                        foreach (var node in cycle)
+                        {
+                            Console.WriteLine("   " + node.Name);
+                        }
+                        Console.WriteLine();
+                        cyclenr++;
                     }
-                    Console.WriteLine();
-                    cyclenr++;
                 }
 
                 if (CheckLoop())
