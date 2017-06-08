@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectGraph.cs" />
+    <Compile Include="Edge.cs" />
     <Compile Include="GraphNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

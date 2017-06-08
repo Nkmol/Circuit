@@ -14,7 +14,12 @@ namespace Models
             get { return base.Next.Select(node => node as Component).ToList(); }
         }
 
-        public new List<Component> Previous;
+        public new List<Component> Previous
+        {
+            get { return base.Previous.Select(node => node as Component).ToList(); }
+        }
+
+        public bool IsConnected => Previous.Count > 0 || Next.Count > 0;
 
         public Bit Value { get; set; }
         public string Name { get; set; }

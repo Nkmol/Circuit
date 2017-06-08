@@ -15,28 +15,65 @@ namespace Models
             this.Components = nodes;
         }
 
+        // No input is connected or no output is connected
+        public bool IsConnected { get; set; } = true;
+
+        public bool IsCyclic => Components.IsCyclic;
+
         public void Start()
         {
-            var firstConnected = Components["Cin"];
-            var cyclenr = 0;
-            foreach (var cycle in Components.DepthFirstCycle(firstConnected))
+            if (CheckConnection())
             {
-                Console.WriteLine($"--- Cycle {cyclenr} ---");
-                foreach (var node in cycle)
+                var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is INPUT && node.IsConnected);
+
+                // TODO Able to call without yield
+                var cyclenr = 0;
+                foreach (var cycle in Components.DepthFirstCycle(firstInput))
                 {
-                    Console.WriteLine("   " + node.Name);
+                    Console.WriteLine($"--- Cycle {cyclenr} ---");
+                    foreach (var node in cycle)
+                    {
+                        Console.WriteLine("   " + node.Name);
+                    }
+                    Console.WriteLine();
+                    cyclenr++;
                 }
-                Console.WriteLine();
-                cyclenr++;
+
+                if (CheckLoop())
+                {
+                    foreach (var node in Components.Values)
+                    {
+                        node.Calculate();
+                    }
+                }
             }
         }
 
-        public void WriteLoops()
+        public bool CheckLoop()
         {
-            foreach (var backwardEdge in Components.BackwardEdges)
+            if (IsCyclic)
             {
-                Console.WriteLine($"Contains a loop from {backwardEdge[0].Name} to {backwardEdge[1].Name}");
+                foreach (var backwardEdge in Components.BackEdges)
+                {
+                    Console.WriteLine($"Contains a loop from {backwardEdge.From.Name} to {backwardEdge.To.Name}");
+                }
             }
+
+            return !IsCyclic;
+        }
+
+        public bool CheckConnection()
+        {
+            var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is INPUT && node.IsConnected);
+            var firstProbe = Components.FirstOrDefault(node => node.Value is PROBE).Value;
+
+            if (firstInput == null || firstProbe == null)
+            {
+                Console.WriteLine($"This board is not connected");
+                IsConnected = false;
+            }
+
+            return IsConnected;
         }
     }
 }
