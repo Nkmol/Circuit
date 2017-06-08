@@ -6,11 +6,9 @@
 
     public class DirectGraph<T> : Dictionary<string, GraphNode<T>>
     {
-        public enum Direction
-        {
-            Backwards,
-            Forwards
-        }
+        public List<List<GraphNode<T>>> BackwardEdges = new List<List<GraphNode<T>>>();
+
+        public bool IsCyclic => BackwardEdges.Count > 0;
 
         public List<GraphNode<T>> First => Values?.Where(x => x.Previous.Count <= 0).ToList();
         public List<GraphNode<T>> Lasts => Values?.Where(x => x.Next.Count <= 0).ToList();
@@ -20,40 +18,42 @@
             Add(key, new GraphNode<T>(value));
         }
 
-        // TODO Add forward and backwards strategy
-        public void Cycle(Action<GraphNode<T>> componentParser, Direction direction = Direction.Forwards, List<GraphNode<T>> startingPoint = null)
+        // Returns the each cycle
+        public IEnumerable<List<GraphNode<T>>> DepthFirstCycle(GraphNode<T> start)
         {
-            if (startingPoint == null || !startingPoint.Any())
+            var stack = new Stack<GraphNode<T>>();
+            // List to preserve order
+            var recursionVisited = new List<GraphNode<T>>();
+
+            stack.Push(start);
+
+            while (stack.Count != 0)
             {
-                if (direction == Direction.Forwards)
+                var current = stack.Pop();
+
+                if (recursionVisited.Contains(current))
                 {
-                    startingPoint = First;
+                    BackwardEdges.Add(new List<GraphNode<T>> { recursionVisited.Last(), current });
+                    continue;
                 }
-                else
+
+                recursionVisited.Add(current);
+
+                var nextNeightbours = current.Next;
+
+                if (nextNeightbours.Count == 0)
                 {
-                    startingPoint = Lasts;
+                    var cycle = recursionVisited.ToList();
+
+                    // Update visited for back-track
+                    recursionVisited.Remove(current); 
+
+                    yield return cycle;
                 }
-            }
-
-            ParseLanes(startingPoint, componentParser, direction);
-        }
-
-        public void ParseLanes(List<GraphNode<T>> nodes, Action<GraphNode<T>> parser, Direction direction)
-        {
-            // Early exit
-            if (nodes?.Any() == false || parser == null)
-            {
-                return;
-            }
-
-            foreach (var node in nodes)
-            {
-                parser(node);
-
-                if (direction == Direction.Forwards)
-                    ParseLanes(node.Next, parser, direction);
-                else
-                    ParseLanes(node.Previous, parser, direction);
+                foreach (var neightbour in nextNeightbours)
+                {
+                    stack.Push(neightbour);
+                }
             }
         }
     }
