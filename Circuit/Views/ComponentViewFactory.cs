@@ -9,7 +9,7 @@
             return new ComponentView
             {
                 Name = component.Name,
-                Output = (int) component.Output,
+                Value = (int) component.Value,
                 Type = component.GetType().Name
             };
         }

@@ -27,7 +27,7 @@ namespace Models
 
             var component = _componentFactory.Create(componentName);
             component.Name = varName;
-            component.Output = (Bit)Enum.Parse(typeof(Bit), input, true);
+            component.Value = (Bit)Enum.Parse(typeof(Bit), input, true);
 
             _nodes.Add(varName, component);
         }

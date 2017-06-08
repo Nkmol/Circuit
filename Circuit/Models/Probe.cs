@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using System.CodeDom;
+
+namespace Models
 {
     using System.Linq;
 
@@ -6,7 +8,11 @@
     {
         public override void Calculate()
         {
-            Output = Inputs.FirstOrDefault();
+            var firstOrDefault = Previous.FirstOrDefault();
+            if (firstOrDefault != null)
+            {
+                Value = firstOrDefault.Value;
+            }
         }
     }
 }

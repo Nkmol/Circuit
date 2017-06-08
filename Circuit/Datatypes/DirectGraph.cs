@@ -4,26 +4,22 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class DirectGraph<T> : Dictionary<string, GraphNode<T>>
+    public class DirectGraph<T> : Dictionary<string, T>
+        where T : GraphNode
     {
-        public List<List<GraphNode<T>>> BackwardEdges = new List<List<GraphNode<T>>>();
+        public List<List<T>> BackwardEdges = new List<List<T>>();
 
         public bool IsCyclic => BackwardEdges.Count > 0;
 
-        public List<GraphNode<T>> First => Values?.Where(x => x.Previous.Count <= 0).ToList();
-        public List<GraphNode<T>> Lasts => Values?.Where(x => x.Next.Count <= 0).ToList();
-
-        public void Add(string key, T value)
-        {
-            Add(key, new GraphNode<T>(value));
-        }
+        public List<T> First => Values?.Where(x => x.Previous.Count <= 0).ToList();
+        public List<T> Lasts => Values?.Where(x => x.Next.Count <= 0).ToList();
 
         // Returns the each cycle
-        public IEnumerable<List<GraphNode<T>>> DepthFirstCycle(GraphNode<T> start)
+        public IEnumerable<List<T>> DepthFirstCycle(T start) 
         {
-            var stack = new Stack<GraphNode<T>>();
+            var stack = new Stack<T>();
             // List to preserve order
-            var recursionVisited = new List<GraphNode<T>>();
+            var recursionVisited = new List<T>();
 
             stack.Push(start);
 
@@ -33,13 +29,13 @@
 
                 if (recursionVisited.Contains(current))
                 {
-                    BackwardEdges.Add(new List<GraphNode<T>> { recursionVisited.Last(), current });
+                    BackwardEdges.Add(new List<T> { recursionVisited.Last(), current });
                     continue;
                 }
 
                 recursionVisited.Add(current);
 
-                var nextNeightbours = current.Next;
+                var nextNeightbours = current.Next.Select(node => node as T).ToList();
 
                 if (nextNeightbours.Count == 0)
                 {

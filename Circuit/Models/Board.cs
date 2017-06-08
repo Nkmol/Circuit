@@ -24,7 +24,7 @@ namespace Models
                 Console.WriteLine($"--- Cycle {cyclenr} ---");
                 foreach (var node in cycle)
                 {
-                    Console.WriteLine("   " + node.Data.Name);
+                    Console.WriteLine("   " + node.Name);
                 }
                 Console.WriteLine();
                 cyclenr++;
@@ -35,7 +35,7 @@ namespace Models
         {
             foreach (var backwardEdge in Components.BackwardEdges)
             {
-                Console.WriteLine($"Contains a loop from {backwardEdge[0].Data.Name} to {backwardEdge[1].Data.Name}");
+                Console.WriteLine($"Contains a loop from {backwardEdge[0].Name} to {backwardEdge[1].Name}");
             }
         }
     }

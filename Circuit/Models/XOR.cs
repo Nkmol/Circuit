@@ -7,13 +7,13 @@
         public override void Calculate()
         {
             // Odd number HIGH inputs
-            if (Inputs.Select(x => x == Bit.HIGH).Count() % 2 != 0)
+            if (Previous.Select(x => x.Value == Bit.HIGH).Count() % 2 != 0)
             {
-                Output = Bit.HIGH;
+                Value = Bit.HIGH;
             }
             else
             {
-                Output = Bit.LOW;
+                Value = Bit.LOW;
             }
         }
     }

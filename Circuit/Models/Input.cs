@@ -10,7 +10,7 @@ namespace Models
     {
         public override void Calculate()
         {
-            Output = Output;
+            
         }
     }
 }
