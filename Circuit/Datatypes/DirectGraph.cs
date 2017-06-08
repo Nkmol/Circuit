@@ -36,11 +36,6 @@ namespace Models
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
-
-                    // Update visited for back-track
-                    // Move as last visited
-                    
-
                     continue;
                 }
 
@@ -49,7 +44,7 @@ namespace Models
                 var nextNeightbours = current.Next.Select(node => node as T).ToList();
 
                 // Only returns valid cycles
-                if (nextNeightbours.Count == 0)
+                if (nextNeightbours.Count == 0 && current is ILeaf)
                 {
                     var cycle = recursionVisited.ToList();
 

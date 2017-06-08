@@ -1,10 +1,11 @@
 ﻿using System.CodeDom;
+using Datatypes;
 
 namespace Models
 {
     using System.Linq;
 
-    public class PROBE : Component
+    public class PROBE : Component, ILeaf
     {
         public override void Calculate()
         {
