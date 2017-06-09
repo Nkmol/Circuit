@@ -13,26 +13,28 @@ namespace Models
 
         public Board(DirectGraph<Component> nodes)
         {
-            this.Components = nodes;
-        }
+            // Default board name
+            Name = "RootBoard";
 
-        // Multiple outputs represent multiple values
-        // TODO Improve so fits better with composite patern
-        // Default atleast one output
-        public new Bit[] Value { get; private set; }  = { Bit.LOW };
+            Components = nodes;
+        }
 
         // No input is connected or no output is connected
         public new bool IsConnected { get; set; } = true;
 
         public override void Calculate()
         {
+            // TODO Support multiplle Input + Output for sub-boards
             if (Start())
             {
-                Value = Components
-                    .Select(pair => pair.Value)
-                    .Where(node => node is PROBE && node.IsConnected)
-                    .Select(node => node.Value)
-                    .ToArray();
+                var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
+                if (firstOrDefault != null)
+                    Value = firstOrDefault.Value;
+//                Value = Components
+//                    .Select(pair => pair.Value)
+//                    .Where(node => node is PROBE && node.IsConnected)
+//                    .Select(node => node.Value)
+//                    .ToArray();
             }
         }
 

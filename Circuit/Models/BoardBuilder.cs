@@ -50,6 +50,7 @@ namespace Models
         public void AddBoard(string varName, string path)
         {
             var board = Board.Create(path);
+            board.Name = varName;
             _nodes.Add(varName, board);   
         }
     }

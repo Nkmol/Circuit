@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    // TODO Board Builder maken
     public class BoardParser
     {
         private const char Delimeter = ':';
