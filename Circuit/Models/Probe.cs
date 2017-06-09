@@ -1,12 +1,19 @@
-﻿namespace Models
+﻿using System.CodeDom;
+using Datatypes;
+
+namespace Models
 {
     using System.Linq;
 
-    public class PROBE : Component
+    public class PROBE : Component, ILeaf
     {
         public override void Calculate()
         {
-            Output = Inputs.FirstOrDefault();
+            var firstOrDefault = Previous.FirstOrDefault();
+            if (firstOrDefault != null)
+            {
+                Value = firstOrDefault.Value;
+            }
         }
     }
 }

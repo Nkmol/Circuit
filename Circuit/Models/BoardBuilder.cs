@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Policy;
+
 namespace Models
 {
     public class BoardBuilder
@@ -7,18 +10,29 @@ namespace Models
         private readonly DirectGraph<Component> _nodes;
         private readonly ComponentFactory _componentFactory = new ComponentFactory();
 
-        public Board Board => new Board(_nodes);
-
         public BoardBuilder()
         {
             _nodes =  new DirectGraph<Component>();
         }
 
-        public void Link(string compName, string assignTo)
+        public Board Build()
         {
-            var component = _nodes[compName];
+            return new Board(_nodes);
+        }
 
-			_nodes[assignTo].LinkNext(component);
+        public void LinkList(string compName, IList<string> links)
+        {
+            foreach (var link in links)
+            {
+                Link(link, compName);
+            }
+        }
+
+        public void Link(string to, string from)
+        {
+            var component = _nodes[to];
+
+			_nodes[from].LinkNext(component);
         }
 
         public void AddComponent(string varName, string componentName, string input = "LOW")
@@ -26,10 +40,18 @@ namespace Models
             input = input ?? "LOW"; // Fix nullable input
 
             var component = _componentFactory.Create(componentName);
+
             component.Name = varName;
-            component.Output = (Bit)Enum.Parse(typeof(Bit), input, true);
+            component.Value = (Bit)Enum.Parse(typeof(Bit), input, true);
 
             _nodes.Add(varName, component);
+        }
+
+        public void AddBoard(string varName, string path)
+        {
+            var board = Board.Create(path);
+            board.Name = varName;
+            _nodes.Add(varName, board);   
         }
     }
 }

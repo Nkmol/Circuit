@@ -4,22 +4,19 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    // TODO Board Builder maken
     public class BoardParser
     {
-        private const char _delimeter = ':';
-        private const char _endOfExp = ';';
-        private const char _comment = '#';
-        private const char _variableDelimeter = '_';
-        private const char _addition = ',';
+        private const char Delimeter = ':';
+        private const char EndOfExp = ';';
+        private const char Comment = '#';
+        private const char VariableDelimeter = '_';
+        private const char Addition = ',';
 
-        public BoardBuilder BoardBuilder = new BoardBuilder();
+        private readonly char[] _trimMap = {'\t', ' ', EndOfExp};
 
-        private readonly char[] _trimMap = {'\t', ' ', _endOfExp};
+        public bool StartProbLinking { get; private set; }
 
-        private bool _startProbLinking;
-
-        public void Parse(string val)
+        private string Parse(string val)
         {
             #region clean value
 
@@ -28,64 +25,93 @@
                 val = val.Replace(c.ToString(), string.Empty);
             }
 
+            val = val.Trim();
+
             #endregion
 
             #region Early exit
             // Don't parse comment lines
-            if (val.StartsWith(_comment.ToString()))
+            if (val.StartsWith(Comment.ToString()))
             {
-                return;
+                return string.Empty;
             }
 
             // Indicator that prob linking has completed
             if (val == string.Empty)
             {
-                _startProbLinking = true;
-                return;
+                StartProbLinking = true;
+                return string.Empty;
             }
             #endregion
 
-            if (_startProbLinking)
-            {
-                ParseLinkLine(val);
 
-            }
-            else
-            {
-                ParseVariableLine(val);
-            }
+            return val;
         }
 
-        private void ParseVariableLine(string line)
+        public VariableLine ParseVariableLine(string line)
         {
-            line = line.Trim();
+            line = Parse(line);
+            if (line == string.Empty)
+                return null;
 
-            var val = line.Split(_delimeter);
+            // Only split at first occurance
+            var val = line.Split(new []{ Delimeter }, 2);
             var varName = val[0];
             var assignValue = val[1];
 
-            var componentProps = ParseComponent(assignValue);
+            // This function is only valuable in this function
+            var (componentName, input) = ParseComponent(assignValue);
+            (string componentName, string input) ParseComponent(string component)
+            {
+                var compProps = component.Split(VariableDelimeter);
+                return (compProps[0], compProps.ElementAtOrDefault(1));
+            }
 
-            BoardBuilder.AddComponent(varName, componentProps[0], componentProps.ElementAtOrDefault(1));
+            return new VariableLine(varName, componentName, input);
         }
 
-        private string[] ParseComponent(string line)
+        public LinkLine ParseLinkLine(string line)
         {
-            // [0] is component name, [1] is optional input value indication
-            return line.Split(_variableDelimeter);
-        }
+            line = Parse(line);
+            if (line == string.Empty)
+                return null;
 
-        private void ParseLinkLine(string line)
-        {
-			// Split assignment
-			var val = line.Split(_delimeter);
+            // Split assignment
+            var val = line.Split(Delimeter);
             var assignTo = val[0];
 
-            // Split different components and assign it as the next
-            foreach (var componentName in val[1].Split(_addition))
+            // Component linked to one ore more components
+            return new LinkLine(assignTo, new List<string>(val[1].Split(Addition)));
+        }
+
+        #region Define DTOs (Data Transfer Objects)
+
+        public class LinkLine
+        {
+            public string Varname;
+            public IList<string> Values;
+
+            public LinkLine(string varname, IList<string> values)
             {
-                BoardBuilder.Link(componentName, assignTo);
+                Varname = varname;
+                Values = values;
             }
         }
+
+        public class VariableLine
+        {
+            public string Varname;
+            public string Compname;
+            public string Input;
+
+            public VariableLine(string varname, string compname, string input)
+            {
+                Varname = varname;
+                Compname = compname;
+                Input = input;
+            }
+        }
+
+        #endregion
     }
 }

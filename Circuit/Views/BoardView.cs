@@ -22,12 +22,12 @@
 
                 if (component.Next?.Count > 0)
                 {
-                    factory.Create(component.Data).Draw();
+                    factory.Create(component).Draw();
                     Console.Write(": ");
 
                     foreach (var nextNode in component.Next)
                     {
-                        factory.Create(nextNode.Data).Draw();
+                        factory.Create(nextNode).Draw();
                         Console.Write(" ");
                     }
 

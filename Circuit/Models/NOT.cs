@@ -4,13 +4,13 @@
     {
         public override void Calculate()
         {
-            if (Inputs[0] == Bit.HIGH)
+            if (Previous[0].Value == Bit.HIGH)
             {
-                Output = Bit.LOW;
+                Value = Bit.LOW;
             }
             else
             {
-                Output = Bit.HIGH;
+                Value = Bit.HIGH;
             }
         }
     }

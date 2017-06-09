@@ -2,13 +2,11 @@
 {
     using System;
 
-    public abstract class Port : Component
+    public class Port : Component
     {
-        private int delay;
-
-        public Bit CalculateOutput()
+        public override void Calculate()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

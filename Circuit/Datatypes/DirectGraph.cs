@@ -1,59 +1,67 @@
-﻿namespace Models
+﻿using Datatypes;
+
+namespace Models
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class DirectGraph<T> : Dictionary<string, GraphNode<T>>
+    public class DirectGraph<T> : Dictionary<string, T>
+        where T : GraphNode
     {
-        public enum Direction
+        // https://en.wikipedia.org/wiki/Depth-first_search#Output_of_a_depth-first_search
+        public List<Edge<T>> BackEdges = new List<Edge<T>>();
+
+        public bool IsCyclic => BackEdges.Count > 0;
+
+        public bool EdgeExists(string from, string to)
         {
-            Backwards,
-            Forwards
+            return this[from].Next.Contains(this[to]);
         }
 
-        public List<GraphNode<T>> First => Values?.Where(x => x.Previous.Count <= 0).ToList();
-        public List<GraphNode<T>> Lasts => Values?.Where(x => x.Next.Count <= 0).ToList();
-
-        public void Add(string key, T value)
+        // Returns the each cycle
+        public IEnumerable<List<T>> DepthFirstCycle(T start) 
         {
-            Add(key, new GraphNode<T>(value));
-        }
+            var stack = new Stack<Edge<T>>();
+            // List to preserve order
+            var recursionVisited = new List<T>();
 
-        // TODO Add forward and backwards strategy
-        public void Cycle(Action<GraphNode<T>> componentParser, Direction direction = Direction.Forwards, List<GraphNode<T>> startingPoint = null)
-        {
-            if (startingPoint == null || !startingPoint.Any())
+            stack.Push(new Edge<T>(start));
+
+            while (stack.Count != 0)
             {
-                if (direction == Direction.Forwards)
+                var currentEdge = stack.Pop();
+                var current = currentEdge.To ?? currentEdge.From;
+
+                if (recursionVisited.Contains(current))
                 {
-                    startingPoint = First;
+                    BackEdges.Add(currentEdge);
+                    continue;
                 }
-                else
+
+                recursionVisited.Add(current);
+
+                var nextNeightbours = current.Next.Select(node => node as T).ToList();
+
+                // Only returns valid cycles
+                if (nextNeightbours.Count == 0 && current is ILeaf)
                 {
-                    startingPoint = Lasts;
+                    var cycle = recursionVisited.ToList();
+
+                    // Update visited for back-track if graph has not completed
+                    if (stack.Count > 0)
+                    {
+                        var index = recursionVisited.IndexOf(stack.Peek().From);
+                        recursionVisited.RemoveRange(index + 1, recursionVisited.Count - (index + 1));
+                    }
+
+                    yield return cycle;
                 }
-            }
 
-            ParseLanes(startingPoint, componentParser, direction);
-        }
-
-        public void ParseLanes(List<GraphNode<T>> nodes, Action<GraphNode<T>> parser, Direction direction)
-        {
-            // Early exit
-            if (nodes?.Any() == false || parser == null)
-            {
-                return;
-            }
-
-            foreach (var node in nodes)
-            {
-                parser(node);
-
-                if (direction == Direction.Forwards)
-                    ParseLanes(node.Next, parser, direction);
-                else
-                    ParseLanes(node.Previous, parser, direction);
+                foreach (var neightbour in nextNeightbours)
+                {
+                    stack.Push(new Edge<T>(current, neightbour));
+                }
             }
         }
     }

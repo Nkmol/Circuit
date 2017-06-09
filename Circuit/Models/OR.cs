@@ -6,13 +6,13 @@
     {
         public override void Calculate()
         {
-            if (Inputs.Select(x => x == Bit.HIGH).Any())
+            if (Previous.Select(x => x.Value == Bit.HIGH).Any())
             {
-                Output = Bit.HIGH;
+                Value = Bit.HIGH;
             }
             else
             {
-                Output = Bit.LOW;
+                Value = Bit.LOW;
             }
         }
     }
