@@ -40,10 +40,17 @@ namespace Models
             input = input ?? "LOW"; // Fix nullable input
 
             var component = _componentFactory.Create(componentName);
+
             component.Name = varName;
             component.Value = (Bit)Enum.Parse(typeof(Bit), input, true);
 
             _nodes.Add(varName, component);
+        }
+
+        public void AddBoard(string varName, string path)
+        {
+            var board = Board.Create(path);
+            _nodes.Add(varName, board);   
         }
     }
 }

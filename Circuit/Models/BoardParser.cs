@@ -55,7 +55,8 @@
             if (line == string.Empty)
                 return null;
 
-            var val = line.Split(Delimeter);
+            // Only split at first occurance
+            var val = line.Split(new []{ Delimeter }, 2);
             var varName = val[0];
             var assignValue = val[1];
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Helpers;
 
 namespace Models
 {
@@ -99,6 +100,40 @@ namespace Models
             }
 
             return IsConnected;
+        }
+
+        public static Board Create(string path)
+        {
+            var reader = new FileReader(path);
+
+            var boardParser = new BoardParser();
+            var bb = new BoardBuilder();
+
+            foreach (var line in reader.ReadLine())
+            {
+                if (boardParser.StartProbLinking)
+                {
+                    var parserLink = boardParser.ParseLinkLine(line);
+                    if (parserLink != null) bb.LinkList(parserLink.Varname, parserLink.Values);
+                }
+                else
+                {
+                    var component = boardParser.ParseVariableLine(line);
+                    if (component != null)
+                    {
+                        if (component.Compname.ToLower() == "board")
+                        {
+                            bb.AddBoard(component.Varname, component.Input);
+                        }
+                        else
+                        {
+                            bb.AddComponent(component.Varname, component.Compname, component.Input);
+                        }
+                    }
+                }
+            }
+
+            return bb.Build();
         }
     }
 }

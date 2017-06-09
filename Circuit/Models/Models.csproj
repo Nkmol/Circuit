@@ -68,6 +68,10 @@
       <Project>{c5f50c3d-7938-4311-aa88-9fd9f6747bc4}</Project>
       <Name>Datatypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{099A1B21-9E0D-49F3-AB51-F0573DAEC404}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
