@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Board
+    public class Board : Component
     {
         public DirectGraph<Component> Components { get; }
 
@@ -15,12 +15,29 @@ namespace Models
             this.Components = nodes;
         }
 
+        // Multiple outputs represent multiple values
+        // TODO Improve so fits better with composite patern
+        // Default atleast one output
+        public new Bit[] Value { get; private set; }  = { Bit.LOW };
+
         // No input is connected or no output is connected
-        public bool IsConnected { get; set; } = true;
+        public new bool IsConnected { get; set; } = true;
+
+        public override void Calculate()
+        {
+            if (Start())
+            {
+                Value = Components
+                    .Select(pair => pair.Value)
+                    .Where(node => node is PROBE && node.IsConnected)
+                    .Select(node => node.Value)
+                    .ToArray();
+            }
+        }
 
         public bool IsCyclic => Components.IsCyclic;
 
-        public void Start()
+        private bool Start()
         {
             if (CheckConnection())
             {
@@ -49,8 +66,12 @@ namespace Models
                     {
                         node.Calculate();
                     }
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public bool CheckLoop()

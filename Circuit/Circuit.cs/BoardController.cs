@@ -37,16 +37,8 @@
 
         public void StartSimulation()
          {
-             try
-             {
-                 _board.Start();
-             }
-             catch (Exception e)
-             {
-                 // TODO Move to view
-                 Console.WriteLine(e.Message);
-             }
-          }
+            _board.Calculate();
+        }
 
         public void DrawBoard()
         {
