@@ -11,11 +11,17 @@ namespace Models
     {
         public DirectGraph<Component> Components { get; }
 
-        public Board(DirectGraph<Component> nodes)
+
+        public Board()
         {
+            Components = new DirectGraph<Component>();
+
             // Default board name
             Name = "RootBoard";
+        }
 
+        public Board(DirectGraph<Component> nodes) : this()
+        {
             Components = nodes;
         }
 
@@ -104,6 +110,8 @@ namespace Models
             return IsConnected;
         }
 
+
+        // TODO Improve, builder and reader to the controller
         public static Board Create(string path)
         {
             var reader = new FileReader(path);
