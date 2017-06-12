@@ -49,12 +49,14 @@
     <Compile Include="BoardParser.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="IFactory.cs" />
     <Compile Include="NAND.cs" />
     <Compile Include="NOR.cs" />
     <Compile Include="NOT.cs" />
     <Compile Include="OR.cs" />
     <Compile Include="Port.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singleton.cs" />
     <Compile Include="XOR.cs" />
     <Compile Include="ComponentFactory.cs" />
     <Compile Include="Input.cs" />

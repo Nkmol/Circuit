@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public abstract class Factory<T>
+    public class Factory<T> : IFactory<T>
+        where T : class 
     {
         protected readonly Dictionary<string, Type> Types = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
@@ -15,6 +16,14 @@ namespace Models
             Types[typenaming] = type;
         }
 
-        public abstract T Create(string type);
+        public T Create(string type)
+        {
+            if (Types.TryGetValue(type, out var t))
+            {
+                return (T)Activator.CreateInstance(t);
+            }
+
+            return null;
+        }
     }
 }

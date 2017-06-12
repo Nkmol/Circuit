@@ -4,12 +4,9 @@ namespace Models
 {
     using System.Linq;
 
-    public class ComponentFactory : Factory<Component>
+    public class ComponentFactory : Singleton<ComponentFactory>, IFactory<Component>
     {
-        private static readonly Lazy<ComponentFactory> InstanceHolder =
-            new Lazy<ComponentFactory>(() => new ComponentFactory());
-
-        public static ComponentFactory Instance => InstanceHolder.Value;
+        private readonly IFactory<Component> _factory = new Factory<Component>();
 
         private ComponentFactory()
         {
@@ -19,16 +16,17 @@ namespace Models
                 .Where(t => loadTypes.IsAssignableFrom(t))
                 .ToList()
                 .ForEach(t => AddType(t.Name, t));
-        }
-        
-        public override Component Create(string type)
-        {
-            if (Types.TryGetValue(type, out var t))
-            {
-                return (Component) Activator.CreateInstance(t);
-            }
 
-            return null;
+        }
+
+        public void AddType(string typenaming, Type type)
+        {
+            _factory.AddType(typenaming, type);
+        }
+
+        public Component Create(string type)
+        {
+            return _factory.Create(type);
         }
     }
 }
