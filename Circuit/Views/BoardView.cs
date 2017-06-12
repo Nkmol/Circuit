@@ -14,7 +14,7 @@
 
         public void Draw()
         {
-            var factory = new ComponentViewFactory();
+            var factory = ComponentViewFactory.Instance;
 
             foreach (var node in _board.Components)
             {

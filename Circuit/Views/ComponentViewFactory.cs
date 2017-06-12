@@ -1,9 +1,18 @@
-﻿namespace Views
+﻿using System;
+using Datatypes;
+
+namespace Views
 {
     using Models;
 
-    public class ComponentViewFactory
+    // Only uses one component, so no need for IFactory
+    public class ComponentViewFactory : Singleton<ComponentViewFactory>
     {
+        private ComponentViewFactory()
+        {
+            
+        }
+
         public ComponentView Create(Component component)
         {
             return new ComponentView

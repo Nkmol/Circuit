@@ -1,4 +1,5 @@
 ﻿using System;
+using Datatypes;
 
 namespace Models
 {
@@ -16,7 +17,6 @@ namespace Models
                 .Where(t => loadTypes.IsAssignableFrom(t))
                 .ToList()
                 .ForEach(t => AddType(t.Name, t));
-
         }
 
         public void AddType(string typenaming, Type type)
