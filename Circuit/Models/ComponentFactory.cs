@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Models
 {
@@ -7,23 +6,21 @@ namespace Models
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
-    public class ComponentFactory
+    public class ComponentFactory : Factory<Component>
     {
-        private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
-        private Dictionary<string, Type> _types;
-
         public ComponentFactory()
         {
-            _types = _assembly.GetTypes()
-                   .Where(x => x.Namespace == "Models")
-                   .Where(x => Attribute.GetCustomAttribute(x, typeof(CompilerGeneratedAttribute)) == null) // Only get user generated types
-                   .ToDictionary(t => t.Name, t => t,
-                        StringComparer.OrdinalIgnoreCase);
+            // Init default values - Own implementation
+            var loadTypes = typeof(Component);
+            loadTypes.Assembly.GetTypes()
+                .Where(t => loadTypes.IsAssignableFrom(t))
+                .ToList()
+                .ForEach(t => AddType(t.Name, t));
         }
         
-        public Component Create(string type)
+        public override Component Create(string type)
         {
-            if (_types.TryGetValue(type, out var t))
+            if (Types.TryGetValue(type, out var t))
             {
                 return (Component) Activator.CreateInstance(t);
             }
