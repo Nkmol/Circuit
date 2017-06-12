@@ -5,7 +5,7 @@ namespace Models
 {
     using System.Linq;
 
-    public class PROBE : Component, ILeaf
+    public class Probe : Component, ILeaf
     {
         public override void Calculate()
         {

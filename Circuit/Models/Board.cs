@@ -44,7 +44,7 @@ namespace Models
         {
             if (CheckConnection())
             {
-                var inputs = Components.Select(pair => pair.Value).Where(node => node is INPUT && node.IsConnected);
+                var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
 
                 // Depth first search for every input
                 var cyclenr = 0;
@@ -92,8 +92,8 @@ namespace Models
 
         public bool CheckConnection()
         {
-            var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is INPUT && node.IsConnected);
-            var firstProbe = Components.FirstOrDefault(node => node.Value is PROBE).Value;
+            var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is Input && node.IsConnected);
+            var firstProbe = Components.FirstOrDefault(node => node.Value is Probe).Value;
 
             if (firstInput == null || firstProbe == null)
             {

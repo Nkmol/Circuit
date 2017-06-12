@@ -7,7 +7,7 @@ using Datatypes;
 
 namespace Models
 {
-    public class INPUT : Component, IRoot
+    public class Input : Component, IRoot
     {
         public override void Calculate()
         {
