@@ -8,7 +8,7 @@ namespace Models
     {
 
         private readonly DirectGraph<Component> _nodes;
-        private readonly ComponentFactory _componentFactory = new ComponentFactory();
+        private readonly ComponentFactory _componentFactory = ComponentFactory.Instance;
 
         public BoardBuilder()
         {

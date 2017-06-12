@@ -3,12 +3,15 @@
 namespace Models
 {
     using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     public class ComponentFactory : Factory<Component>
     {
-        public ComponentFactory()
+        private static readonly Lazy<ComponentFactory> InstanceHolder =
+            new Lazy<ComponentFactory>(() => new ComponentFactory());
+
+        public static ComponentFactory Instance => InstanceHolder.Value;
+
+        private ComponentFactory()
         {
             // Init default values - Own implementation
             var loadTypes = typeof(Component);
@@ -27,6 +30,5 @@ namespace Models
 
             return null;
         }
-
     }
 }
