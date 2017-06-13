@@ -4,38 +4,44 @@ using System.Security.Policy;
 
 namespace Models
 {
-    public class BoardBuilder
+    public class BoardBuilder : IBuilder<Board>
     {
-
-        private readonly DirectGraph<Component> _nodes;
+        private Board _boardToBuild;
         private readonly ComponentFactory _componentFactory = new ComponentFactory();
 
         public BoardBuilder()
         {
-            _nodes =  new DirectGraph<Component>();
+            _boardToBuild = new Board();
         }
 
         public Board Build()
         {
-            return new Board(_nodes);
+            var buildedBoard = _boardToBuild;
+            _boardToBuild = new Board();
+
+            return buildedBoard;
         }
 
-        public void LinkList(string compName, IList<string> links)
+        public BoardBuilder LinkList(string compName, IList<string> links)
         {
             foreach (var link in links)
             {
                 Link(link, compName);
             }
+
+            return this;
         }
 
-        public void Link(string to, string from)
+        public BoardBuilder Link(string to, string from)
         {
-            var component = _nodes[to];
+            var component = _boardToBuild.Components[to];
 
-			_nodes[from].LinkNext(component);
+            _boardToBuild.Components[from].LinkNext(component);
+
+            return this;
         }
 
-        public void AddComponent(string varName, string componentName, string input = "LOW")
+        public BoardBuilder AddComponent(string varName, string componentName, string input = "LOW")
         {
             input = input ?? "LOW"; // Fix nullable input
 
@@ -44,14 +50,18 @@ namespace Models
             component.Name = varName;
             component.Value = (Bit)Enum.Parse(typeof(Bit), input, true);
 
-            _nodes.Add(varName, component);
+            _boardToBuild.Components.Add(varName, component);
+
+            return this;
         }
 
-        public void AddBoard(string varName, string path)
+        public BoardBuilder AddBoard(string varName, string path)
         {
             var board = Board.Create(path);
             board.Name = varName;
-            _nodes.Add(varName, board);   
+            _boardToBuild.Components.Add(varName, board);
+
+            return this;
         }
     }
 }
