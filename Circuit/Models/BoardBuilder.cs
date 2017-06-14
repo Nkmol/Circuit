@@ -6,8 +6,8 @@ namespace Models
 {
     public class BoardBuilder : IBuilder<Board>
     {
+        private readonly ComponentFactory _componentFactory = ComponentFactory.Instance;
         private Board _boardToBuild;
-        private readonly ComponentFactory _componentFactory = new ComponentFactory();
 
         public BoardBuilder()
         {

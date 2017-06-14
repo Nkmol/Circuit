@@ -1,35 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
+using Datatypes;
 
 namespace Models
 {
     using System.Linq;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
 
-    public class ComponentFactory
+    public class ComponentFactory : Singleton<ComponentFactory>, IFactory<Component>
     {
-        private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
-        private Dictionary<string, Type> _types;
+        private readonly IFactory<Component> _factory = new Factory<Component>();
 
-        public ComponentFactory()
+        private ComponentFactory()
         {
-            _types = _assembly.GetTypes()
-                   .Where(x => x.Namespace == "Models")
-                   .Where(x => Attribute.GetCustomAttribute(x, typeof(CompilerGeneratedAttribute)) == null) // Only get user generated types
-                   .ToDictionary(t => t.Name, t => t,
-                        StringComparer.OrdinalIgnoreCase);
+            // Init default values - Own implementation
+            var loadTypes = typeof(Component);
+            loadTypes.Assembly.GetTypes()
+                .Where(t => loadTypes.IsAssignableFrom(t))
+                .ToList()
+                .ForEach(t => AddType(t.Name, t));
         }
-        
+
+        public void AddType(string typenaming, Type type)
+        {
+            _factory.AddType(typenaming, type);
+        }
+
         public Component Create(string type)
         {
-            if (_types.TryGetValue(type, out var t))
-            {
-                return (Component) Activator.CreateInstance(t);
-            }
-
-            return null;
+            return _factory.Create(type);
         }
-
     }
 }
