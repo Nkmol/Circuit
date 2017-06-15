@@ -7,6 +7,8 @@ using Datatypes;
 
 namespace Models
 {
+    using Datatypes.DirectedGraph;
+
     public class Input : Component, IRoot
     {
         public override void Calculate()

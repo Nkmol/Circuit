@@ -4,6 +4,7 @@ using Datatypes;
 namespace Models
 {
     using System.Linq;
+    using Datatypes.DirectedGraph;
 
     public class Probe : Component, ILeaf
     {

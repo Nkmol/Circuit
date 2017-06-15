@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
+    using Datatypes;
+    using Datatypes.DirectedGraph;
+
     public abstract class Component : GraphNode
     {
         // TODO Improve super casting from base

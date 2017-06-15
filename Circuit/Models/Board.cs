@@ -7,6 +7,9 @@ using Helpers;
 
 namespace Models
 {
+    using Datatypes;
+    using Datatypes.DirectedGraph;
+
     public class Board : Component
     {
         public DirectGraph<Component> Components { get; }

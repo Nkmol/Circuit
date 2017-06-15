@@ -1,8 +1,5 @@
-﻿using Datatypes;
-
-namespace Models
+﻿namespace Datatypes.DirectedGraph
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -20,7 +17,7 @@ namespace Models
         }
 
         // Returns the each cycle
-        public IEnumerable<List<T>> DepthFirstCycle(T start) 
+        public IEnumerable<List<T>> DepthFirstCycle(T start)
         {
             var stack = new Stack<Edge<T>>();
             // List to preserve order

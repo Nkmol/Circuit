@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Datatypes
+﻿namespace Datatypes
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Factory<T> : IFactory<T>
-        where T : class 
+        where T : class
     {
-        protected readonly Dictionary<string, Type> Types = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+        protected readonly Dictionary<string, Type> Types =
+            new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
         public void AddType(string typenaming, Type type)
         {
@@ -17,7 +18,7 @@ namespace Datatypes
         {
             if (Types.TryGetValue(type, out var t))
             {
-                return (T)Activator.CreateInstance(t);
+                return (T) Activator.CreateInstance(t);
             }
 
             return null;

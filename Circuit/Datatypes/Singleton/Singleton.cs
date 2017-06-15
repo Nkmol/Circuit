@@ -1,18 +1,17 @@
-﻿using System;
-
-namespace Datatypes
+﻿namespace Datatypes
 {
+    using System;
+
     public class Singleton<T>
         where T : class
     {
+        private static readonly Lazy<T> InstanceHolder =
+            new Lazy<T>(() => (T) Activator.CreateInstance(typeof(T), true));
+
         protected Singleton()
         {
         }
 
-        private static readonly Lazy<T> InstanceHolder =
-            new Lazy<T>(() => (T) Activator.CreateInstance(typeof(T), true));
-
         public static T Instance => InstanceHolder.Value;
     }
 }
-

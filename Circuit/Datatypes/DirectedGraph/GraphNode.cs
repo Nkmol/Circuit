@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Models
+﻿namespace Datatypes.DirectedGraph
 {
     using System.Collections.Generic;
 
