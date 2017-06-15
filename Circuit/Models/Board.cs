@@ -14,7 +14,8 @@ namespace Models
     public class Board : Component
     {
         public DirectGraph<Component> Components { get; }
-
+        public bool IsCyclic => Components.IsCyclic;
+        public List<Component> Probes => Components.Select(x => x.Value).Where(x => x is Probe).ToList();
 
         public Board()
         {
@@ -39,13 +40,11 @@ namespace Models
             if (firstOrDefault != null)
                 Value = firstOrDefault.Value;
 
-            foreach (var node in Components)
+            foreach (var cycle in Cycle())
             {
-                node.Value.Calculate();
+                cycle.ForEach(x => x.Calculate());
             }
         }
-
-        public bool IsCyclic => Components.IsCyclic;
 
         public IEnumerable<Cycle<Component>> Cycle()
         {

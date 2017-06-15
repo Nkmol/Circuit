@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using Datatypes.DirectedGraph;
     using Helpers;
     using Models;
@@ -13,6 +14,8 @@
         private BoardParser _boardParser;
         private BoardView _boardView;
         private Board _board;
+
+        public List<Probe> Outputs => _board.Probes.Select(x => (Probe)x).ToList();
 
         public void LoadBoard(string path)
         {
@@ -63,13 +66,10 @@
                 }
                 yield return cycle;
             }
-
-            _board.Calculate();
         }
 
         public void StartSimulation()
         {
-            _board.Cycle();
             _board.Calculate();
         }
 

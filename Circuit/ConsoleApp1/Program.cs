@@ -2,7 +2,6 @@
 {
     using System;
     using Circuit;
-    using Datatypes;
 
     internal class Program
     {
@@ -23,6 +22,13 @@
 //            controller.StartSimulation();
             Console.WriteLine("--- Board Summary ---");
             controller.DrawBoard();
+            Console.WriteLine();
+
+            Console.WriteLine("--- Output ----");
+            foreach (var output in controller.Outputs)
+            {
+                Console.WriteLine($"{output.Name} = {output.Value}");
+            }
 
             Console.ReadKey();
         }
