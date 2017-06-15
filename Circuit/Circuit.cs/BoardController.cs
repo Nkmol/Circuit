@@ -17,6 +17,10 @@
 
         public List<Probe> Outputs => _board.Probes.Select(x => (Probe)x).ToList();
 
+        // Checks
+        public bool IsBoardConnected => _board.IsConnected;
+        public List<Edge<Component>> Loops => _board.Components.BackEdges; 
+
         public void LoadBoard(string path)
         {
             _board = CreateBoard(path);

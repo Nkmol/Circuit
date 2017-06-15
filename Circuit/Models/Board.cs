@@ -63,19 +63,6 @@ namespace Models
             }
         }
 
-        public bool CheckLoop()
-        {
-            if (IsCyclic)
-            {
-                foreach (var backwardEdge in Components.BackEdges)
-                {
-                    Console.WriteLine($"Contains a loop from {backwardEdge.From.Name} to {backwardEdge.To.Name}");
-                }
-            }
-
-            return !IsCyclic;
-        }
-
         public bool CheckConnection()
         {
             var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is Input && node.IsConnected);
@@ -83,7 +70,6 @@ namespace Models
 
             if (firstInput == null || firstProbe == null)
             {
-                Console.WriteLine($"This board is not connected");
                 IsConnected = false;
             }
 
