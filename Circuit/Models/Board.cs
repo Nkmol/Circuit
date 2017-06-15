@@ -39,11 +39,6 @@ namespace Models
                 var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
                 if (firstOrDefault != null)
                     Value = firstOrDefault.Value;
-//                Value = Components
-//                    .Select(pair => pair.Value)
-//                    .Where(node => node is PROBE && node.IsConnected)
-//                    .Select(node => node.Value)
-//                    .ToArray();
             }
         }
 
@@ -111,42 +106,6 @@ namespace Models
             }
 
             return IsConnected;
-        }
-
-
-        // TODO Improve, builder and reader to the controller
-        public static Board Create(string path)
-        {
-            var reader = new FileReader(path);
-
-            var boardParser = new BoardParser();
-            var bb = new BoardBuilder();
-
-            foreach (var line in reader.ReadLine())
-            {
-                if (boardParser.StartProbLinking)
-                {
-                    var parserLink = boardParser.ParseLinkLine(line);
-                    if (parserLink != null) bb.LinkList(parserLink.Varname, parserLink.Values);
-                }
-                else
-                {
-                    var component = boardParser.ParseVariableLine(line);
-                    if (component != null)
-                    {
-                        if (component.Compname.ToLower() == "board")
-                        {
-                            bb.AddBoard(component.Varname, component.Input);
-                        }
-                        else
-                        {
-                            bb.AddComponent(component.Varname, component.Compname, component.Input);
-                        }
-                    }
-                }
-            }
-
-            return bb.Build();
         }
     }
 }
