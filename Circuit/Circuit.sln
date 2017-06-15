@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{C7696B51-F04C-4CD9-8A39-E5CD8B8EA475}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Circuit", "Circuit.cs\Circuit.csproj", "{F6397FE4-D9FA-4E0F-B0B2-167CDCA51B45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datatypes", "Datatypes\Datatypes.csproj", "{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Tests", "Tests\Models.Tests.csproj", "{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

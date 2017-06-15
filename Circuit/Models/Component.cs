@@ -12,15 +12,9 @@ namespace Models
     public abstract class Component : GraphNode
     {
         // TODO Improve super casting from base
-        public new List<Component> Next
-        {
-            get { return base.Next.Select(node => node as Component).ToList(); }
-        }
+        public new List<Component> Next { get; } = new List<Component>();
 
-        public new List<Component> Previous
-        {
-            get { return base.Previous.Select(node => node as Component).ToList(); }
-        }
+        public new List<Component> Previous { get; } = new List<Component>();
 
         public bool IsConnected => Previous.Count > 0 || Next.Count > 0;
 

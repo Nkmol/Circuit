@@ -2,11 +2,11 @@
 {
     using System.Linq;
 
-    internal class NAND : Port
+    public class NAND : Port
     {
         public override void Calculate()
         {
-            if (Previous.Select(x => x.Value == Bit.HIGH).Count() == Previous.Count)
+            if (Previous.Count(x => x.Value == Bit.HIGH) == Previous.Count)
             {
                 Value = Bit.LOW;
             }
