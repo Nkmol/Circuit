@@ -18,21 +18,52 @@
             Console.WriteLine("Press a key to continue");
             Console.ReadKey();
 
+            var file = GetFile();
+            DrawBoard(file);
+            var btn = Console.ReadKey();
+
+            while (true)
+            {
+                switch (btn.Key)
+                {
+                    case ConsoleKey.R:
+                        DrawBoard(file);
+                        break;
+                    case ConsoleKey.F:
+                        GetFile();
+                        DrawBoard(file);
+                        break;
+                    default:
+                        Environment.Exit(0);
+                        break;
+                }
+
+                btn = Console.ReadKey();
+            }
+        }
+
+        private static string GetFile()
+        {
             // Ask for file
             var file = "";
             OpenFileDialog dialog = new OpenFileDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                Console.Clear();
-                Console.WriteLine("Selected file: " + dialog.FileName); // file name
-                Console.WriteLine();
-
                 file = dialog.FileName;
             }
             else
             {
                 Environment.Exit(0);
             }
+
+            return file;
+        }
+
+        private static void DrawBoard(string file)
+        {
+            Console.Clear();
+            Console.WriteLine("Selected file: " + file); // file name
+            Console.WriteLine();
 
             var controller = new BoardController();
             controller.LoadBoard(file);
@@ -75,8 +106,6 @@
             {
                 Console.WriteLine($"{output.Name} = {output.Value}");
             }
-
-            Console.ReadKey();
         }
     }
 }
