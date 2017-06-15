@@ -1,14 +1,41 @@
 ﻿namespace ConsoleApp1
 {
     using System;
+    using System.IO;
+    using System.Windows.Forms;
     using Circuit;
 
     internal class Program
     {
+        [STAThread]
         private static void Main(string[] args)
         {
+            // TODO Option for restarting
+
+            Console.WriteLine("Welcome to the Circuit simulator");
+            Console.WriteLine("Please first select a valid circuit file for us to use.");
+            Console.WriteLine();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadKey();
+
+            // Ask for file
+            var file = "";
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Console.Clear();
+                Console.WriteLine("Selected file: " + dialog.FileName); // file name
+                Console.WriteLine();
+
+                file = dialog.FileName;
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
             var controller = new BoardController();
-            controller.LoadBoard(@"C:\Users\srm\Desktop\Circuit1_FullAdder.txt");
+            controller.LoadBoard(file);
 
             if (!controller.IsBoardConnected)
             {
