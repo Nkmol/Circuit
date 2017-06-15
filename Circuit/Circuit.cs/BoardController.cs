@@ -1,6 +1,9 @@
 ﻿namespace Circuit
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using Datatypes.DirectedGraph;
     using Helpers;
     using Models;
     using Views;
@@ -50,8 +53,23 @@
             return bb.Build();
         }
 
+        public IEnumerable<Cycle<Component>> StartSimulationYieldCycles()
+        {
+            foreach (var cycle in _board.Cycle())
+            {
+                foreach (var node in cycle)
+                {
+                    node.Calculate();
+                }
+                yield return cycle;
+            }
+
+            _board.Calculate();
+        }
+
         public void StartSimulation()
-         {
+        {
+            _board.Cycle();
             _board.Calculate();
         }
 

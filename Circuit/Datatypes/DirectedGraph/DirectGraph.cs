@@ -17,14 +17,16 @@
         }
 
         // Returns the each cycle
-        public IEnumerable<List<T>> DepthFirstCycle(T start)
+        public IEnumerable<Cycle<T>> DepthFirstCycle(T start)
         {
             var stack = new Stack<Edge<T>>();
             // List to preserve order
             var recursionVisited = new List<T>();
 
+            // Starting point
             stack.Push(new Edge<T>(start));
 
+            var cycleNumber = 0;
             while (stack.Count != 0)
             {
                 var currentEdge = stack.Pop();
@@ -52,7 +54,7 @@
                         recursionVisited.RemoveRange(index + 1, recursionVisited.Count - (index + 1));
                     }
 
-                    yield return cycle;
+                    yield return new Cycle<T>(cycle) {Number = ++cycleNumber, Start = start};
                 }
 
                 foreach (var neightbour in nextNeightbours)

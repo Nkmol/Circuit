@@ -40,14 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DirectGraph.cs" />
-    <Compile Include="Edge.cs" />
+    <Compile Include="DirectedGraph\Cycle.cs" />
+    <Compile Include="DirectedGraph\DirectGraph.cs" />
+    <Compile Include="DirectedGraph\Edge.cs" />
     <Compile Include="Factory\Factory.cs" />
-    <Compile Include="GraphNode.cs" />
+    <Compile Include="DirectedGraph\GraphNode.cs" />
     <Compile Include="Factory\IFactory.cs" />
-    <Compile Include="Leaf.cs" />
+    <Compile Include="DirectedGraph\Leaf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Root.cs" />
+    <Compile Include="DirectedGraph\Root.cs" />
     <Compile Include="Singleton\Singleton.cs" />
   </ItemGroup>
   <ItemGroup />

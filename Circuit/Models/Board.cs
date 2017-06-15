@@ -7,6 +7,7 @@ using Helpers;
 
 namespace Models
 {
+    using System.Runtime.CompilerServices;
     using Datatypes;
     using Datatypes.DirectedGraph;
 
@@ -34,51 +35,33 @@ namespace Models
         public override void Calculate()
         {
             // TODO Support multiplle Input + Output for sub-boards
-            if (Start())
+            var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
+            if (firstOrDefault != null)
+                Value = firstOrDefault.Value;
+
+            foreach (var node in Components)
             {
-                var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
-                if (firstOrDefault != null)
-                    Value = firstOrDefault.Value;
+                node.Value.Calculate();
             }
         }
 
         public bool IsCyclic => Components.IsCyclic;
 
-        private bool Start()
+        public IEnumerable<Cycle<Component>> Cycle()
         {
-            if (CheckConnection())
+            var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
+
+            // Depth first search for every input
+            foreach (var input in inputs)
             {
-                var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
-
-                // Depth first search for every input
-                var cyclenr = 0;
-                foreach (var input in inputs)
+                // TODO Able to call without yield
+                foreach (var cycle in Components.DepthFirstCycle(input))
                 {
-                    // TODO Able to call without yield
-                    foreach (var cycle in Components.DepthFirstCycle(input))
-                    {
-                        Console.WriteLine($"--- Cycle {cyclenr} ---");
-                        foreach (var node in cycle)
-                        {
-                            Console.WriteLine("   " + node.Name);
-                        }
-                        Console.WriteLine();
-                        cyclenr++;
-                    }
-                }
+                    cycle.Name = $"Cycle {Name}";
 
-                if (CheckLoop())
-                {
-                    foreach (var node in Components.Values)
-                    {
-                        node.Calculate();
-                    }
-
-                    return true;
+                    yield return cycle;
                 }
             }
-
-            return false;
         }
 
         public bool CheckLoop()
