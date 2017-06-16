@@ -18,6 +18,9 @@
 
         private string Parse(string val)
         {
+            if (val == null)
+                return string.Empty;
+
             #region clean value
 
             foreach (var c in _trimMap)

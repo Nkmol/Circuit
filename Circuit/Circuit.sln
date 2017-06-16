@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Tests", "Tests\Model
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datatypes.Tests", "Datatypes.Tests\Datatypes.Tests.csproj", "{27DF7C15-78B0-491C-8D1B-55661DE1D3C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{DCBE5525-6DC3-4024-A1FD-1CD11F1875B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Datatype", "Datatype", "{7F0884D3-6DB1-4DF9-83C3-BD33071201F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +64,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7696B51-F04C-4CD9-8A39-E5CD8B8EA475} = {DCBE5525-6DC3-4024-A1FD-1CD11F1875B3}
+		{C5F50C3D-7938-4311-AA88-9FD9F6747BC4} = {7F0884D3-6DB1-4DF9-83C3-BD33071201F0}
+		{7D18C24D-371D-48EA-B825-1FB4A5A3FBBD} = {DCBE5525-6DC3-4024-A1FD-1CD11F1875B3}
+		{27DF7C15-78B0-491C-8D1B-55661DE1D3C0} = {7F0884D3-6DB1-4DF9-83C3-BD33071201F0}
 	EndGlobalSection
 EndGlobal
