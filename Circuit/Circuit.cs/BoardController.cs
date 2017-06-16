@@ -110,7 +110,7 @@
             var dgmlWriter = new DGMLWriter();
             uniqueLinks.Select(x => new DGMLWriter.Link(x.From.Name, x.To.Name, "")).ToList()
                 .ForEach(x => dgmlWriter.AddLink(x));
-            uniqueComp.Select(x => new DGMLWriter.Node(x.Name, x.GetType().Name)).ToList()
+            uniqueComp.Select(x => new DGMLWriter.Node(x.Name, $"{x.GetType().Name}[{x.Value}]")).ToList()
                 .ForEach(x => dgmlWriter.AddNode(x));
 
             dgmlWriter.Serialize(path);
