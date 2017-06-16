@@ -2,21 +2,22 @@
 {
     using System.Collections.Generic;
 
-    public class GraphNode
+    public class GraphNode<T>
+        where T : GraphNode<T>
     {
-        public List<GraphNode> Next;
-        public List<GraphNode> Previous;
+        public List<T> Next;
+        public List<T> Previous;
 
         public GraphNode()
         {
-            Next = new List<GraphNode>();
-            Previous = new List<GraphNode>();
+            Next = new List<T>();
+            Previous = new List<T>();
         }
 
-        public void LinkNext(GraphNode value)
+        public void LinkNext(T value)
         {
             Next.Add(value);
-            value.Previous.Add(this);
+            value.Previous.Add((T) this);
         }
     }
 }
