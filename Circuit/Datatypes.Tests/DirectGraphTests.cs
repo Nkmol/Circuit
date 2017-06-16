@@ -99,6 +99,7 @@ namespace Datatypes.Tests
             }
 
             // Assert
+            Assert.IsTrue(graph.IsCyclic);
             Assert.AreEqual(1, cycles.Count);
 
             var cycle1 = cycles[0];
@@ -134,7 +135,43 @@ namespace Datatypes.Tests
             }
 
             // Assert
+            Assert.IsTrue(graph.IsCyclic);
             Assert.AreEqual(0, cycles.Count);
+        }
+
+        // node1 -> node2 -> node3
+        [TestMethod]
+        [TestCategory("DFS")]
+        public void Graph_StartDFSInTheMiddle_ReturnCycleOfTwo()
+        {
+            // Arrange
+            var graph = new DirectGraph<GraphNode>();
+
+            var node1 = new GraphNode();
+            var node2 = new GraphNode();
+            var node3 = new GraphNode();
+
+            node1.LinkNext(node2);
+            node2.LinkNext(node3);
+
+            graph.Add("node1", node1);
+            graph.Add("node2", node2);
+            graph.Add("node3", node2);
+
+            // Act
+            var cycles = new List<Cycle<GraphNode>>();
+            foreach (var cycle in graph.DepthFirstCycle(node2))
+            {
+                cycles.Add(cycle);
+            }
+
+            // Assert
+            Assert.AreEqual(1, cycles.Count);
+
+            var cycle1 = cycles[0];
+            Assert.AreEqual(2, cycle1.Count);
+            Assert.AreEqual(node2, cycle1[0]);
+            Assert.AreEqual(node3, cycle1[1]);
         }
     }
 }

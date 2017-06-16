@@ -11,11 +11,6 @@
 
         public bool IsCyclic => BackEdges.Count > 0;
 
-        public bool EdgeExists(string from, string to)
-        {
-            return this[from].Next.Contains(this[to]);
-        }
-
         // Returns the each cycle
         public IEnumerable<Cycle<T>> DepthFirstCycle(T start)
         {
