@@ -7,6 +7,8 @@
 
     internal class Program
     {
+        private static BoardController _controller;
+
         [STAThread]
         private static void Main(string[] args)
         {
@@ -20,7 +22,7 @@
 
             var file = GetFile();
             DrawBoard(file);
-            var btn = Console.ReadKey();
+            var btn = Console.ReadKey(true);
 
             while (true)
             {
@@ -33,6 +35,9 @@
                         GetFile();
                         DrawBoard(file);
                         break;
+                    case ConsoleKey.D:
+                        CreateDiagram();
+                        break;
                     default:
                         Environment.Exit(0);
                         break;
@@ -40,6 +45,15 @@
 
                 btn = Console.ReadKey();
             }
+        }
+
+        private static void CreateDiagram()
+        {
+            Console.Clear();
+            var path = @"C:\Users\srm\Downloads";
+            _controller.CreateDiagram(path);
+
+            Console.WriteLine("The file has been saved at: " + path);
         }
 
         private static string GetFile()
@@ -65,10 +79,10 @@
             Console.WriteLine("Selected file: " + file); // file name
             Console.WriteLine();
 
-            var controller = new BoardController();
-            controller.LoadBoard(file);
+            _controller = new BoardController();
+            _controller.LoadBoard(file);
 
-            if (!controller.IsBoardConnected)
+            if (!_controller.IsBoardConnected)
             {
                 Console.WriteLine("This board is not minimally connected");
                 Console.ReadKey();
@@ -76,7 +90,7 @@
             }
 
             //            controller.StartSimulation();
-            foreach (var cycle in controller.StartSimulationYieldCycles())
+            foreach (var cycle in _controller.StartSimulationYieldCycles())
             {
                 Console.WriteLine($"--- {cycle.Name} of starting point {cycle.Start.Name} [{cycle.Number}] ---");
                 foreach (var node in cycle)
@@ -87,22 +101,22 @@
             }
 
             // Only know after cycling thru about all relations
-            if (controller.Loops.Count > 0)
+            if (_controller.Loops.Count > 0)
             {
                 Console.WriteLine("This board contains invalid connections, resulting in a loop.");
                 Console.WriteLine("The following connections have been ignored: ");
-                foreach (var connection in controller.Loops)
+                foreach (var connection in _controller.Loops)
                 {
                     Console.WriteLine($"Contains a loop from {connection.From.Name} to {connection.To.Name}");
                 }
             }
 
             Console.WriteLine("--- Board Summary ---");
-            controller.DrawBoard();
+            _controller.DrawBoard();
             Console.WriteLine();
 
             Console.WriteLine("--- Output ----");
-            foreach (var output in controller.Outputs)
+            foreach (var output in _controller.Outputs)
             {
                 Console.WriteLine($"{output.Name} = {output.Value}");
             }

@@ -1,6 +1,8 @@
 ﻿namespace Models
 {
     using System.Collections.Generic;
+    using System.IO;
+    using System.Security.AccessControl;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -66,10 +68,14 @@
             var root = new XmlRootAttribute("DirectedGraph");
             root.Namespace = "http://schemas.microsoft.com/vs/2009/dgml";
             var serializer = new XmlSerializer(typeof(Graph), root);
+
             var settings = new XmlWriterSettings();
             settings.Indent = true;
-            var xmlWriter = XmlWriter.Create(xmlpath, settings);
+
+            var xmlWriter = XmlWriter.Create($"{xmlpath}\\file.dgml", settings);
             serializer.Serialize(xmlWriter, g);
+
+            xmlWriter.Close();
         }
     }
 }
