@@ -8,6 +8,12 @@ namespace Datatypes.Tests
     [TestClass]
     public class GraphNodeTests
     {
+        // Quickfix to use graphnode
+        public class GraphNode : GraphNode<GraphNode>
+        {
+
+        }
+
         [TestMethod]
         public void Node_AddLinkNext_NodeHasOneLinkNext()
         {

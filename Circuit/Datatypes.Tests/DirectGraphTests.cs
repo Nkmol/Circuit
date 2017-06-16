@@ -9,6 +9,12 @@ namespace Datatypes.Tests
     [TestClass]
     public class DirectGraphTests
     {
+        // Quickfix to use graphnode
+        public class GraphNode : GraphNode<GraphNode>
+        {
+            
+        }
+
         //                     node2 
         //            node1 ->      -> node4
         //                     node3
