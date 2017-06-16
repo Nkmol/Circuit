@@ -34,9 +34,13 @@ namespace Models
 
         public BoardBuilder Link(string to, string from)
         {
-            var component = _boardToBuild.Components[to];
+            var componentTo = _boardToBuild.Components.TryGetValue(to, out Component result1) ? result1 : null; ;
+            var componentFrom = _boardToBuild.Components.TryGetValue(from, out Component result2) ? result2 : null;
 
-            _boardToBuild.Components[from].LinkNext(component);
+            if (componentFrom != null && componentTo != null)
+            {
+                _boardToBuild.Components[from].LinkNext(componentTo);
+            }
 
             return this;
         }
@@ -47,10 +51,16 @@ namespace Models
 
             var component = _componentFactory.Create(componentName);
 
-            component.Name = varName;
-            component.Value = (Bit)Enum.Parse(typeof(Bit), input, true);
+            if (component == null)
+                return this;
 
-            _boardToBuild.Components.Add(varName, component);
+            component.Name = varName;
+            if (Enum.TryParse(input, out Bit result))
+            {
+                component.Value = result;
+            }
+
+            _boardToBuild.Components[varName] = component;
 
             return this;
         }
