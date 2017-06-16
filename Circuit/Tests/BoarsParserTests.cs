@@ -16,9 +16,6 @@ namespace Tests
     [TestClass]
     public class BoarsParserTests
     {
-//        private readonly string _dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-//        var path = $"{_dir}\\OnlyComments.txt";
-
         [TestMethod]
         public void Parser_FileWithOnlyComments_Null()
         {

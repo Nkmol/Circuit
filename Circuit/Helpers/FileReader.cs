@@ -41,17 +41,17 @@
             }
         }
 
-        private bool HasExtension(string extension)
+        public bool HasExtension(string extension)
         {
             return Path.GetExtension(_path) == extension;
         }
 
-        private bool IsEmpty()
+        public bool IsEmpty()
         {
             return new FileInfo(_path).Length == 0;
         }
 
-        private bool Exists()
+        public bool Exists()
         {
             return File.Exists(_path);
         }
