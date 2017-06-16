@@ -71,11 +71,11 @@ namespace Datatypes.Tests
             // Arrange
             var graph = new DirectGraph<GraphNode>();
 
-            var node1 = new GraphNode() { Name = "node1"};
-            var node2 = new GraphNode() { Name = "node2" }; 
-            var node3 = new GraphNode() { Name = "node3" }; 
-            var node4 = new GraphNode() { Name = "node4" }; 
-            var node5 = new GraphNode() { Name = "node5" };
+            var node1 = new GraphNode() {Name = "node1"};
+            var node2 = new GraphNode() {Name = "node2"};
+            var node3 = new GraphNode() {Name = "node3"};
+            var node4 = new GraphNode() {Name = "node4"};
+            var node5 = new GraphNode() {Name = "node5"};
 
             // Arrange - setup relations
             node1.LinkNext(node2);
@@ -107,6 +107,34 @@ namespace Datatypes.Tests
             Assert.AreEqual(node1, cycle1[0], "node1");
             Assert.AreEqual(node2, cycle1[1], "node2");
             Assert.AreEqual(node5, cycle1[2], "node5");
+        }
+
+        // Node1 -> node2 -> node1
+        [TestMethod]
+        [TestCategory("DFS")]
+        public void Graph_AddInfiniteRelation_ReturnNoCycles()
+        {
+            // Arrange
+            var graph = new DirectGraph<GraphNode>();
+
+            var node1 = new GraphNode();
+            var node2 = new GraphNode();
+
+            node1.LinkNext(node2);
+            node2.LinkNext(node1);
+
+            graph.Add("node1", node1);
+            graph.Add("node2", node2);
+
+            // Act
+            var cycles = new List<Cycle<GraphNode>>();
+            foreach (var cycle in graph.DepthFirstCycle(node1))
+            {
+                cycles.Add(cycle);
+            }
+
+            // Assert
+            Assert.AreEqual(0, cycles.Count);
         }
     }
 }

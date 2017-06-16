@@ -35,7 +35,7 @@
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
-                    recursionVisited = stack.Peek().Path;
+                    if(stack.Count != 0) recursionVisited = stack.Peek().Path;
                     continue;
                 }
 
