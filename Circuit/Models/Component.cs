@@ -9,13 +9,8 @@ namespace Models
     using Datatypes;
     using Datatypes.DirectedGraph;
 
-    public abstract class Component : GraphNode
+    public abstract class Component : GraphNode<Component>
     {
-        // TODO Improve super casting from base
-        public new List<Component> Next { get; } = new List<Component>();
-
-        public new List<Component> Previous { get; } = new List<Component>();
-
         public bool IsConnected => Previous.Count > 0 || Next.Count > 0;
 
         public Bit Value { get; set; }

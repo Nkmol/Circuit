@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Datatypes.DirectedGraph
 {
     public class Cycle<T> : List<T>
-        where T : GraphNode
+        where T : GraphNode<T>
     {
         public Cycle(IEnumerable<T> cycle) : base(cycle)
         {

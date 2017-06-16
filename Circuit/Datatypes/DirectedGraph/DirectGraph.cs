@@ -4,7 +4,7 @@
     using System.Linq;
 
     public class DirectGraph<T> : Dictionary<string, T>
-        where T : GraphNode
+        where T : GraphNode<T>
     {
         // https://en.wikipedia.org/wiki/Depth-first_search#Output_of_a_depth-first_search
         public List<Edge<T>> BackEdges = new List<Edge<T>>();
