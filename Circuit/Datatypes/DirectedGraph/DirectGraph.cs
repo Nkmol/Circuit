@@ -35,6 +35,7 @@
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
+                    recursionVisited = stack.Peek().Path;
                     continue;
                 }
 
@@ -43,7 +44,7 @@
                 var nextNeightbours = current.Next.Select(node => node as T).ToList();
 
                 // Only returns valid cycles
-                if (nextNeightbours.Count == 0 && current is ILeaf)
+                if (nextNeightbours.Count == 0)
                 {
                     var cycle = recursionVisited.ToList();
 
@@ -59,7 +60,7 @@
 
                 foreach (var neightbour in nextNeightbours)
                 {
-                    stack.Push(new Edge<T>(current, neightbour));
+                    stack.Push(new Edge<T>(current, neightbour) { Path = recursionVisited.ToList()});
                 }
             }
         }

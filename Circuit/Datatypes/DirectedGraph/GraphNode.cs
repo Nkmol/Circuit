@@ -4,6 +4,7 @@
 
     public class GraphNode
     {
+        public string Name;
         public List<GraphNode> Next;
         public List<GraphNode> Previous;
 
