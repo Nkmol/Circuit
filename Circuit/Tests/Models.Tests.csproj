@@ -53,6 +53,7 @@
     <Compile Include="Factories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoarsParserTests.cs" />
+    <Compile Include="BoardBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
