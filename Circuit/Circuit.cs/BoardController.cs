@@ -20,7 +20,9 @@
 
         // Checks
         public bool IsBoardConnected => _board.IsConnected;
-        public List<Edge<Component>> Loops => _board.Components.BackEdges; 
+        public List<Edge<Component>> Loops => _board.Components.BackEdges;
+
+        public static string DiagramExtension => DGMLWriter.Extension;
 
         public void LoadBoard(string path)
         {

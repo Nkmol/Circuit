@@ -18,7 +18,7 @@
             Console.WriteLine("Please first select a valid circuit file for us to use.");
             Console.WriteLine();
             Console.WriteLine("Press a key to continue");
-            Console.ReadKey();
+            Console.ReadKey(true);
 
             var file = GetFile();
             DrawBoard(file);
@@ -50,7 +50,15 @@
         private static void CreateDiagram()
         {
             Console.Clear();
-            var path = @"C:\Users\srm\Downloads";
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Directed Graph Markup Language (*.dgml)|*.dgml";
+            var path = string.Empty;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                path = dialog.FileName;
+            }
+
             _controller.CreateDiagram(path);
 
             Console.WriteLine("The file has been saved at: " + path);
@@ -61,6 +69,7 @@
             // Ask for file
             var file = "";
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Text (*.txt)|*.txt";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 file = dialog.FileName;
@@ -85,7 +94,7 @@
             if (!_controller.IsBoardConnected)
             {
                 Console.WriteLine("This board is not minimally connected");
-                Console.ReadKey();
+                Console.ReadKey(true);
                 Environment.Exit(0);
             }
 

@@ -42,6 +42,7 @@
 
         public List<Node> Nodes { get; protected set; }
         public List<Link> Links { get; protected set; }
+        public static string Extension { get; private set; } = ".dgml";
 
         public DGMLWriter()
         {
@@ -72,7 +73,7 @@
             var settings = new XmlWriterSettings();
             settings.Indent = true;
 
-            var xmlWriter = XmlWriter.Create($"{xmlpath}\\file.dgml", settings);
+            var xmlWriter = XmlWriter.Create(xmlpath, settings);
             serializer.Serialize(xmlWriter, g);
 
             xmlWriter.Close();
