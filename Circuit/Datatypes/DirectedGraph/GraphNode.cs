@@ -5,6 +5,7 @@
     public class GraphNode<T>
         where T : GraphNode<T>
     {
+        public string Name;
         public List<T> Next;
         public List<T> Previous;
 
