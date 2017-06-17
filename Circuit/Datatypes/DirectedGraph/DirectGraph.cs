@@ -7,7 +7,7 @@ namespace Datatypes.DirectedGraph
         where T : GraphNode<T>
     {
         // https://en.wikipedia.org/wiki/Depth-first_search#Output_of_a_depth-first_search
-        public List<Edge<T>> BackEdges = new List<Edge<T>>();
+        public HashSet<Edge<T>> BackEdges = new HashSet<Edge<T>>();
 
         public bool IsCyclic => BackEdges.Count > 0;
 

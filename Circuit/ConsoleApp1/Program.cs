@@ -11,8 +11,6 @@ namespace ConsoleApp1
         [STAThread]
         private static void Main(string[] args)
         {
-            // TODO Option for restarting
-
             Console.WriteLine("Welcome to the Circuit simulator");
             Console.WriteLine("Please first select a valid circuit file for us to use.");
             Console.WriteLine();
@@ -21,34 +19,42 @@ namespace ConsoleApp1
 
             var file = GetFile();
             DrawBoard(file);
-            var btn = Console.ReadKey(true);
 
             while (true)
             {
+                ShowOptions();
+                var btn = Console.ReadKey(true);
+                Console.Clear();
+
                 switch (btn.Key)
                 {
                     case ConsoleKey.R:
                         DrawBoard(file);
                         break;
                     case ConsoleKey.F:
-                        GetFile();
+                        file = GetFile();
                         DrawBoard(file);
                         break;
                     case ConsoleKey.D:
                         CreateDiagram();
                         break;
                     default:
-                        Environment.Exit(0);
                         break;
                 }
-
-                btn = Console.ReadKey();
             }
+        }
+
+        private static void ShowOptions()
+        {
+            Console.WriteLine();
+            Console.WriteLine("The following options are available");
+            Console.WriteLine("  r = To restart the board simulation.");
+            Console.WriteLine("  f = To choose another board file.");
+            Console.WriteLine("  d = To save a diagram to the chosen location.");
         }
 
         private static void CreateDiagram()
         {
-            Console.Clear();
             var dialog = new SaveFileDialog();
             dialog.Filter = "Directed Graph Markup Language (*.dgml)|*.dgml";
             var path = string.Empty;
@@ -77,7 +83,6 @@ namespace ConsoleApp1
 
         private static void DrawBoard(string file)
         {
-            Console.Clear();
             Console.WriteLine("Selected file: " + file); // file name
             Console.WriteLine();
 
@@ -86,6 +91,8 @@ namespace ConsoleApp1
 
             if (!_controller.IsBoardConnected)
             {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("This board is not minimally connected");
                 Console.ReadKey(true);
                 Environment.Exit(0);
@@ -103,10 +110,16 @@ namespace ConsoleApp1
             // Only know after cycling thru about all relations
             if (_controller.Loops.Count > 0)
             {
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("This board contains invalid connections, resulting in a loop.");
                 Console.WriteLine("The following connections have been ignored: ");
                 foreach (var connection in _controller.Loops)
+                {
                     Console.WriteLine($"Contains a loop from {connection.From.Name} to {connection.To.Name}");
+                }
+                Console.WriteLine();
+                Console.ResetColor();
             }
 
             Console.WriteLine("--- Board Summary ---");
