@@ -11,6 +11,7 @@ namespace Datatypes.DirectedGraph
 
         public bool IsCyclic => BackEdges.Count > 0;
 
+        // TODO can be improved by cycling through edges and flagging them as forward, backward, etc 
         // Returns the each cycle
         public IEnumerable<Cycle<T>> DepthFirstCycle(T start)
         {
@@ -27,6 +28,13 @@ namespace Datatypes.DirectedGraph
                 var currentEdge = stack.Pop();
                 var current = currentEdge.To ?? currentEdge.From;
 
+                // Cancel backedge path
+                if (BackEdges.Contains(currentEdge))
+                {
+                    if (stack.Count != 0) recursionVisited = stack.Peek().Path;
+                    continue;
+                }
+
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
@@ -39,7 +47,7 @@ namespace Datatypes.DirectedGraph
                 var nextNeightbours = current.Next.Select(node => node).ToList();
 
                 // Only returns valid cycles
-                if (nextNeightbours.Count == 0)
+                if (nextNeightbours.Count == 0 && current is ILeaf)
                 {
                     var cycle = recursionVisited.ToList();
 
