@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xml;
     using Datatypes.DirectedGraph;
     using Helpers;
     using Models;
@@ -19,7 +20,9 @@
 
         // Checks
         public bool IsBoardConnected => _board.IsConnected;
-        public List<Edge<Component>> Loops => _board.Components.BackEdges; 
+        public List<Edge<Component>> Loops => _board.Components.BackEdges;
+
+        public static string DiagramExtension => DGMLWriter.Extension;
 
         public void LoadBoard(string path)
         {
@@ -81,6 +84,36 @@
         {
             _boardView = new BoardView(_board);
             _boardView.Draw();
+        }
+
+        public void CreateDiagram(string path)
+        {
+            // Get all links
+            var links = new List<Edge<Component>>();
+            foreach (var cycle in _board.Cycle())
+            {
+                Component prev = null;
+                foreach (var node in cycle)
+                {
+                    if (prev != null)
+                    {
+                        links.Add(new Edge<Component>(prev, node));
+                    }
+
+                    prev = node;
+                }
+            }
+
+            var uniqueLinks = links.Distinct();
+            var uniqueComp = links.Select(x => x.From).GroupBy(x => x.Name, (key, group) => group.First());
+
+            var dgmlWriter = new DGMLWriter();
+            uniqueLinks.Select(x => new DGMLWriter.Link(x.From.Name, x.To.Name, "")).ToList()
+                .ForEach(x => dgmlWriter.AddLink(x));
+            uniqueComp.Select(x => new DGMLWriter.Node(x.Name, $"{x.GetType().Name}[{x.Value}]")).ToList()
+                .ForEach(x => dgmlWriter.AddNode(x));
+
+            dgmlWriter.Serialize(path);
         }
     }
 }
