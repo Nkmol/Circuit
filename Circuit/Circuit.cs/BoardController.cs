@@ -34,20 +34,25 @@ namespace Circuit
             var bb = new BoardBuilder();
 
             foreach (var line in reader.ReadLine())
+            {
+                var parsedLine = boardParser.Parse(line);
+                if(parsedLine == null)
+                    continue;
+
                 if (boardParser.StartProbLinking)
                 {
-                    var parserLink = boardParser.ParseLinkLine(line);
-                    if (parserLink != null) bb.LinkList(parserLink.Varname, parserLink.Values);
+                    var compname = parsedLine[0];
+                    bb.LinkList(compname, parsedLine.Skip(1).ToList());
                 }
                 else
                 {
-                    var component = boardParser.ParseVariableLine(line);
-                    if (component != null)
-                        if (component.Compname.ToLower() == "board")
-                            bb.AddBoard(component.Varname, CreateBoard(component.Input));
-                        else
-                            bb.AddComponent(component.Varname, component.Compname, component.Input);
+                    string varname = parsedLine[0], compname = parsedLine[1], input = parsedLine[2];
+                    if (compname.ToLower() == "board")
+                        bb.AddBoard(varname, CreateBoard(input));
+                    else
+                        bb.AddComponent(varname, compname, input);
                 }
+            }
 
             return bb.Build();
         }
