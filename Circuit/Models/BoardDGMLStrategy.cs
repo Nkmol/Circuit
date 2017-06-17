@@ -18,7 +18,7 @@ namespace Models
         {
             var uniqueComp = toParse.Select(x => x.From).GroupBy(x => x.Name, (key, group) => group.First());
 
-            return uniqueComp.Select(x => new DgmlWriter.Node(x.Name, $"{x.GetType().Name}[{x.Value}]")).ToList();
+            return uniqueComp.Select(x => new DgmlWriter.Node(x.Name, $"{x.Name} = {x.GetType().Name}[{x.Value}]")).ToList();
         }
     }
 }
