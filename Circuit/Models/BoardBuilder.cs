@@ -55,9 +55,8 @@ namespace Models
             return this;
         }
 
-        public BoardBuilder AddBoard(string varName, string path)
+        public BoardBuilder AddBoard(string varName, Board board)
         {
-            var board = Board.Create(path);
             board.Name = varName;
             _boardToBuild.Components.Add(varName, board);
 

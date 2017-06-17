@@ -7,13 +7,15 @@ using Helpers;
 
 namespace Models
 {
+    using System.Runtime.CompilerServices;
     using Datatypes;
     using Datatypes.DirectedGraph;
 
     public class Board : Component
     {
         public DirectGraph<Component> Components { get; }
-
+        public bool IsCyclic => Components.IsCyclic;
+        public List<Component> Probes => Components.Select(x => x.Value).Where(x => x is Probe).ToList();
 
         public Board()
         {
@@ -34,69 +36,31 @@ namespace Models
         public override void Calculate()
         {
             // TODO Support multiplle Input + Output for sub-boards
-            if (Start())
+            var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
+            if (firstOrDefault != null)
+                Value = firstOrDefault.Value;
+
+            foreach (var cycle in Cycle())
             {
-                var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
-                if (firstOrDefault != null)
-                    Value = firstOrDefault.Value;
-//                Value = Components
-//                    .Select(pair => pair.Value)
-//                    .Where(node => node is PROBE && node.IsConnected)
-//                    .Select(node => node.Value)
-//                    .ToArray();
+                cycle.ForEach(x => x.Calculate());
             }
         }
 
-        public bool IsCyclic => Components.IsCyclic;
-
-        private bool Start()
+        public IEnumerable<Cycle<Component>> Cycle()
         {
-            if (CheckConnection())
+            var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
+
+            // Depth first search for every input
+            foreach (var input in inputs)
             {
-                var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
-
-                // Depth first search for every input
-                var cyclenr = 0;
-                foreach (var input in inputs)
+                // TODO Able to call without yield
+                foreach (var cycle in Components.DepthFirstCycle(input))
                 {
-                    // TODO Able to call without yield
-                    foreach (var cycle in Components.DepthFirstCycle(input))
-                    {
-                        Console.WriteLine($"--- Cycle {cyclenr} ---");
-                        foreach (var node in cycle)
-                        {
-                            Console.WriteLine("   " + node.Name);
-                        }
-                        Console.WriteLine();
-                        cyclenr++;
-                    }
-                }
+                    cycle.Name = $"Cycle {Name}";
 
-                if (CheckLoop())
-                {
-                    foreach (var node in Components.Values)
-                    {
-                        node.Calculate();
-                    }
-
-                    return true;
+                    yield return cycle;
                 }
             }
-
-            return false;
-        }
-
-        public bool CheckLoop()
-        {
-            if (IsCyclic)
-            {
-                foreach (var backwardEdge in Components.BackEdges)
-                {
-                    Console.WriteLine($"Contains a loop from {backwardEdge.From.Name} to {backwardEdge.To.Name}");
-                }
-            }
-
-            return !IsCyclic;
         }
 
         public bool CheckConnection()
@@ -106,47 +70,10 @@ namespace Models
 
             if (firstInput == null || firstProbe == null)
             {
-                Console.WriteLine($"This board is not connected");
                 IsConnected = false;
             }
 
             return IsConnected;
-        }
-
-
-        // TODO Improve, builder and reader to the controller
-        public static Board Create(string path)
-        {
-            var reader = new FileReader(path);
-
-            var boardParser = new BoardParser();
-            var bb = new BoardBuilder();
-
-            foreach (var line in reader.ReadLine())
-            {
-                if (boardParser.StartProbLinking)
-                {
-                    var parserLink = boardParser.ParseLinkLine(line);
-                    if (parserLink != null) bb.LinkList(parserLink.Varname, parserLink.Values);
-                }
-                else
-                {
-                    var component = boardParser.ParseVariableLine(line);
-                    if (component != null)
-                    {
-                        if (component.Compname.ToLower() == "board")
-                        {
-                            bb.AddBoard(component.Varname, component.Input);
-                        }
-                        else
-                        {
-                            bb.AddComponent(component.Varname, component.Compname, component.Input);
-                        }
-                    }
-                }
-            }
-
-            return bb.Build();
         }
     }
 }

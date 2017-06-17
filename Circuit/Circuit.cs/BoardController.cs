@@ -1,6 +1,10 @@
 ﻿namespace Circuit
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Datatypes.DirectedGraph;
     using Helpers;
     using Models;
     using Views;
@@ -11,13 +15,65 @@
         private BoardView _boardView;
         private Board _board;
 
+        public List<Probe> Outputs => _board.Probes.Select(x => (Probe)x).ToList();
+
+        // Checks
+        public bool IsBoardConnected => _board.IsConnected;
+        public List<Edge<Component>> Loops => _board.Components.BackEdges; 
+
         public void LoadBoard(string path)
         {
-            _board = Board.Create(path);
+            _board = CreateBoard(path);
+        }
+
+        private Board CreateBoard(string path)
+        {
+            var reader = new FileReader(path);
+
+            var boardParser = new BoardParser();
+            var bb = new BoardBuilder();
+
+            foreach (var line in reader.ReadLine())
+            {
+                if (boardParser.StartProbLinking)
+                {
+                    var parserLink = boardParser.ParseLinkLine(line);
+                    if (parserLink != null) bb.LinkList(parserLink.Varname, parserLink.Values);
+                }
+                else
+                {
+                    var component = boardParser.ParseVariableLine(line);
+                    if (component != null)
+                    {
+                        if (component.Compname.ToLower() == "board")
+                        {
+                            bb.AddBoard(component.Varname, CreateBoard(component.Input));
+                        }
+                        else
+                        {
+                            bb.AddComponent(component.Varname, component.Compname, component.Input);
+                        }
+                    }
+                }
+            }
+
+            return bb.Build();
+        }
+
+        public IEnumerable<Cycle<Component>> StartSimulationYieldCycles()
+        {
+            foreach (var cycle in _board.Cycle())
+            {
+                foreach (var node in cycle)
+                {
+                    node.Calculate();
+                }
+                yield return cycle;
+            }
         }
 
         public void StartSimulation()
-         {
+        {
             _board.Calculate();
         }
 

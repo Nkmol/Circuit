@@ -53,6 +53,14 @@
       <Project>{f6397fe4-d9fa-4e0f-b0b2-167cdca51b45}</Project>
       <Name>Circuit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Datatypes\Datatypes.csproj">
+      <Project>{C5F50C3D-7938-4311-AA88-9FD9F6747BC4}</Project>
+      <Name>Datatypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{C7696B51-F04C-4CD9-8A39-E5CD8B8EA475}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
