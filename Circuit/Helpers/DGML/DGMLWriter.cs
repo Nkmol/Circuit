@@ -2,18 +2,18 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Models
+namespace Helpers.DGML
 {
-    public class DGMLWriter
+    public class DgmlWriter
     {
-        public DGMLWriter()
+        public DgmlWriter()
         {
             Nodes = new List<Node>();
             Links = new List<Link>();
         }
 
-        public List<Node> Nodes { get; protected set; }
-        public List<Link> Links { get; protected set; }
+        public List<Node> Nodes { get; set; }
+        public List<Link> Links { get; set; }
         public static string Extension { get; } = ".dgml";
 
         public void AddNode(Node n)

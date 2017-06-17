@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 
 namespace Models
@@ -15,17 +15,15 @@ namespace Models
 
         public bool StartProbLinking { get; private set; }
 
-        private string Parse(string val)
+        public string[] Parse(string val)
         {
             if (val == null)
-                return string.Empty;
+                return null;
 
             #region clean value
 
             foreach (var c in _trimMap)
                 val = val.Replace(c.ToString(), string.Empty);
-
-            val = val.Trim();
 
             #endregion
 
@@ -33,27 +31,25 @@ namespace Models
 
             // Don't parse comment lines
             if (val.StartsWith(Comment.ToString()))
-                return string.Empty;
-
-            // Indicator that prob linking has completed
-            if (val == string.Empty)
-            {
-                StartProbLinking = true;
-                return string.Empty;
-            }
+                return null;
 
             #endregion
 
+            // Indicator that prob linking has completed
+            if (val == Environment.NewLine || val == string.Empty)
+            {
+                StartProbLinking = true;
+                return null;
+            }
 
-            return val;
+            // Parse line based on flag
+            if (StartProbLinking)
+                return ParseLinkLine(val);
+            return ParseVariableLine(val);
         }
 
-        public VariableLine ParseVariableLine(string line)
+        private string[] ParseVariableLine(string line)
         {
-            line = Parse(line);
-            if (line == string.Empty)
-                return null;
-
             // Only split at first occurance
             var val = line.Split(new[] {Delimeter}, 2);
             var varName = val[0];
@@ -68,51 +64,17 @@ namespace Models
                 return (compProps[0], compProps.ElementAtOrDefault(1));
             }
 
-            return new VariableLine(varName, componentName, input);
+            return new[] {varName, componentName, input};
         }
 
-        public LinkLine ParseLinkLine(string line)
+        private string[] ParseLinkLine(string line)
         {
-            line = Parse(line);
-            if (line == string.Empty)
-                return null;
-
             // Split assignment
             var val = line.Split(Delimeter);
             var assignTo = val[0];
 
             // Component linked to one ore more components
-            return new LinkLine(assignTo, new List<string>(val[1].Split(Addition)));
+            return new[] {assignTo}.Concat(val[1].Split(Addition)).ToArray();
         }
-
-        #region Define DTOs (Data Transfer Objects)
-
-        public class LinkLine
-        {
-            public IList<string> Values;
-            public string Varname;
-
-            public LinkLine(string varname, IList<string> values)
-            {
-                Varname = varname;
-                Values = values;
-            }
-        }
-
-        public class VariableLine
-        {
-            public string Compname;
-            public string Input;
-            public string Varname;
-
-            public VariableLine(string varname, string compname, string input)
-            {
-                Varname = varname;
-                Compname = compname;
-                Input = input;
-            }
-        }
-
-        #endregion
     }
 }

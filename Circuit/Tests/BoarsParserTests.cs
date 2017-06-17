@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
@@ -24,17 +23,10 @@ namespace Tests
             // Act
 
             // Both methods should ignore comments
-            var resultLinkLine = new List<BoardParser.LinkLine>();
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-            {
-                resultLinkLine.Add(parser.ParseLinkLine(line));
-                resultVarLine.Add(parser.ParseVariableLine(line));
-            }
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            Assert.AreEqual(0, resultVarLine.Count(x => x != null));
-            Assert.AreEqual(0, resultLinkLine.Count(x => x != null));
+            Assert.AreEqual(0, resultLines.Count(x => x != null));
         }
 
         [TestMethod]
@@ -52,17 +44,10 @@ namespace Tests
             // Act
 
             // Both methods should ignore comments
-            var resultLinkLine = new List<BoardParser.LinkLine>();
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-            {
-                resultLinkLine.Add(parser.ParseLinkLine(line));
-                resultVarLine.Add(parser.ParseVariableLine(line));
-            }
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            Assert.AreEqual(0, resultVarLine.Count(x => x != null));
-            Assert.AreEqual(0, resultLinkLine.Count(x => x != null));
+            Assert.AreEqual(0, resultLines.Count(x => x != null));
         }
 
         [TestMethod]
@@ -77,17 +62,10 @@ namespace Tests
             // Act
 
             // Both methods should ignore comments
-            var resultLinkLine = new List<BoardParser.LinkLine>();
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-            {
-                resultLinkLine.Add(parser.ParseLinkLine(line));
-                resultVarLine.Add(parser.ParseVariableLine(line));
-            }
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            Assert.AreEqual(0, resultVarLine.Count(x => x != null));
-            Assert.AreEqual(0, resultLinkLine.Count(x => x != null));
+            Assert.AreEqual(0, resultLines.Count(x => x != null));
         }
 
         [TestMethod]
@@ -99,17 +77,10 @@ namespace Tests
             // Act
 
             // Both methods should ignore comments
-            var resultLinkLine = new List<BoardParser.LinkLine>();
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-            {
-                resultLinkLine.Add(parser.ParseLinkLine(line));
-                resultVarLine.Add(parser.ParseVariableLine(line));
-            }
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            Assert.AreEqual(0, resultVarLine.Count(x => x != null));
-            Assert.AreEqual(0, resultLinkLine.Count(x => x != null));
+            Assert.AreEqual(0, resultLines.Count(x => x != null));
         }
 
         [TestMethod]
@@ -120,15 +91,13 @@ namespace Tests
             var lines = new[] {"A: Input"};
 
             // Act
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseVariableLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
-            Assert.AreEqual("A", result.Varname);
-            Assert.AreEqual("Input", result.Compname);
-            Assert.AreEqual(null, result.Input);
+            var result = resultLines[0];
+            Assert.AreEqual("A", result[0]);
+            Assert.AreEqual("Input", result[1]);
+            Assert.AreEqual(null, result[2]);
         }
 
         [TestMethod]
@@ -139,15 +108,13 @@ namespace Tests
             var lines = new[] {"A: Input_High"};
 
             // Act
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseVariableLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
-            Assert.AreEqual("A", result.Varname);
-            Assert.AreEqual("Input", result.Compname);
-            Assert.AreEqual("High", result.Input);
+            var result = resultLines[0];
+            Assert.AreEqual("A", result[0]);
+            Assert.AreEqual("Input", result[1]);
+            Assert.AreEqual("High", result[2]);
         }
 
         [TestMethod]
@@ -158,15 +125,13 @@ namespace Tests
             var lines = new[] {"      A   :    Input_High       "};
 
             // Act
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseVariableLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
-            Assert.AreEqual("A", result.Varname);
-            Assert.AreEqual("Input", result.Compname);
-            Assert.AreEqual("High", result.Input);
+            var result = resultLines[0];
+            Assert.AreEqual("A", result[0]);
+            Assert.AreEqual("Input", result[1]);
+            Assert.AreEqual("High", result[2]);
         }
 
         [TestMethod]
@@ -177,15 +142,13 @@ namespace Tests
             var lines = new[] {"	A: 	Input_High	"};
 
             // Act
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseVariableLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
-            Assert.AreEqual("A", result.Varname);
-            Assert.AreEqual("Input", result.Compname);
-            Assert.AreEqual("High", result.Input);
+            var result = resultLines[0];
+            Assert.AreEqual("A", result[0]);
+            Assert.AreEqual("Input", result[1]);
+            Assert.AreEqual("High", result[2]);
         }
 
         [TestMethod]
@@ -196,12 +159,10 @@ namespace Tests
             var lines = new[] {Environment.NewLine};
 
             // Act
-            var resultVarLine = new List<BoardParser.VariableLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseVariableLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
+            var result = resultLines[0];
             Assert.IsTrue(parser.StartProbLinking);
             Assert.AreEqual(null, result);
         }
@@ -211,19 +172,21 @@ namespace Tests
         {
             // Arrange
             var parser = new BoardParser();
-            var lines = new[] {"A: B, C, D"};
+            var lines = new[]
+            {
+                Environment.NewLine, // to activate linking flag
+                "A: B, C, D"
+            };
 
             // Act
-            var resultVarLine = new List<BoardParser.LinkLine>();
-            foreach (var line in lines)
-                resultVarLine.Add(parser.ParseLinkLine(line));
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
-            var result = resultVarLine[0];
-            Assert.AreEqual("A", result.Varname);
-            Assert.AreEqual("B", result.Values[0]);
-            Assert.AreEqual("C", result.Values[1]);
-            Assert.AreEqual("D", result.Values[2]);
+            var result = resultLines[1];
+            Assert.AreEqual("A", result[0]);
+            Assert.AreEqual("B", result[1]);
+            Assert.AreEqual("C", result[2]);
+            Assert.AreEqual("D", result[3]);
         }
     }
 }
