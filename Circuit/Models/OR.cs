@@ -2,11 +2,11 @@
 {
     using System.Linq;
 
-    internal class OR : Port
+    public class OR : Port
     {
         public override void Calculate()
         {
-            if (Previous.Select(x => x.Value == Bit.HIGH).Any())
+            if (Previous.Any(x => x.Value == Bit.HIGH))
             {
                 Value = Bit.HIGH;
             }

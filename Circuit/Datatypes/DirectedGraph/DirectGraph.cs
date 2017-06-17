@@ -4,17 +4,12 @@
     using System.Linq;
 
     public class DirectGraph<T> : Dictionary<string, T>
-        where T : GraphNode
+        where T : GraphNode<T>
     {
         // https://en.wikipedia.org/wiki/Depth-first_search#Output_of_a_depth-first_search
         public List<Edge<T>> BackEdges = new List<Edge<T>>();
 
         public bool IsCyclic => BackEdges.Count > 0;
-
-        public bool EdgeExists(string from, string to)
-        {
-            return this[from].Next.Contains(this[to]);
-        }
 
         // Returns the each cycle
         public IEnumerable<Cycle<T>> DepthFirstCycle(T start)
@@ -35,6 +30,7 @@
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
+                    if(stack.Count != 0) recursionVisited = stack.Peek().Path;
                     continue;
                 }
 
@@ -43,7 +39,7 @@
                 var nextNeightbours = current.Next.Select(node => node as T).ToList();
 
                 // Only returns valid cycles
-                if (nextNeightbours.Count == 0 && current is ILeaf)
+                if (nextNeightbours.Count == 0)
                 {
                     var cycle = recursionVisited.ToList();
 
@@ -59,7 +55,7 @@
 
                 foreach (var neightbour in nextNeightbours)
                 {
-                    stack.Push(new Edge<T>(current, neightbour));
+                    stack.Push(new Edge<T>(current, neightbour) { Path = recursionVisited.ToList()});
                 }
             }
         }

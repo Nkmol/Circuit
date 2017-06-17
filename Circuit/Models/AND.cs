@@ -2,7 +2,7 @@
 {
     using System.Linq;
 
-    internal class AND : Port
+    public class AND : Port
     {
         public override void Calculate()
         {
