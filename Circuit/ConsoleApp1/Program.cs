@@ -1,14 +1,72 @@
 ﻿namespace ConsoleApp1
 {
     using System;
+    using System.IO;
+    using System.Windows.Forms;
     using Circuit;
 
     internal class Program
     {
+        [STAThread]
         private static void Main(string[] args)
         {
+            // TODO Option for restarting
+
+            Console.WriteLine("Welcome to the Circuit simulator");
+            Console.WriteLine("Please first select a valid circuit file for us to use.");
+            Console.WriteLine();
+            Console.WriteLine("Press a key to continue");
+            Console.ReadKey();
+
+            var file = GetFile();
+            DrawBoard(file);
+            var btn = Console.ReadKey();
+
+            while (true)
+            {
+                switch (btn.Key)
+                {
+                    case ConsoleKey.R:
+                        DrawBoard(file);
+                        break;
+                    case ConsoleKey.F:
+                        GetFile();
+                        DrawBoard(file);
+                        break;
+                    default:
+                        Environment.Exit(0);
+                        break;
+                }
+
+                btn = Console.ReadKey();
+            }
+        }
+
+        private static string GetFile()
+        {
+            // Ask for file
+            var file = "";
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                file = dialog.FileName;
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+
+            return file;
+        }
+
+        private static void DrawBoard(string file)
+        {
+            Console.Clear();
+            Console.WriteLine("Selected file: " + file); // file name
+            Console.WriteLine();
+
             var controller = new BoardController();
-            controller.LoadBoard(@"C:\Users\srm\Desktop\Circuit1_FullAdder.txt");
+            controller.LoadBoard(file);
 
             if (!controller.IsBoardConnected)
             {
@@ -48,8 +106,6 @@
             {
                 Console.WriteLine($"{output.Name} = {output.Value}");
             }
-
-            Console.ReadKey();
         }
     }
 }
