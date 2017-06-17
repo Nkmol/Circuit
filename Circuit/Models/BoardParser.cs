@@ -11,7 +11,7 @@ namespace Models
         private const char VariableDelimeter = '_';
         private const char Addition = ',';
 
-        private readonly char[] _trimMap = {'\t', ' ', EndOfExp};
+        private readonly char[] _trimMap = {'\t', EndOfExp};
 
         public bool StartProbLinking { get; private set; }
 
@@ -25,6 +25,7 @@ namespace Models
             foreach (var c in _trimMap)
                 val = val.Replace(c.ToString(), string.Empty);
 
+            val = val.Trim(' ');
             #endregion
 
             #region Early exit
@@ -43,9 +44,13 @@ namespace Models
             }
 
             // Parse line based on flag
+            string[] result;
             if (StartProbLinking)
-                return ParseLinkLine(val);
-            return ParseVariableLine(val);
+                result = ParseLinkLine(val);
+            else
+                result = ParseVariableLine(val);
+
+            return result.Select(x => x?.Trim()).ToArray();
         }
 
         private string[] ParseVariableLine(string line)

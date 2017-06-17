@@ -22,6 +22,7 @@ namespace Models
         public DirectGraph<Component> Components { get; }
         public bool IsCyclic => Components.IsCyclic;
         public List<Component> Probes => Components.Select(x => x.Value).Where(x => x is Probe).ToList();
+        public List<Component> Inputs => Components.Select(pair => pair.Value).Where(node => node is Input).ToList();
 
         // No input is connected or no output is connected
         public new bool IsConnected { get; set; } = true;
@@ -29,26 +30,31 @@ namespace Models
         public override void Calculate()
         {
             // TODO Support multiplle Input + Output for sub-boards
-            var firstOrDefault = Previous.FirstOrDefault(x => x.Value == Bit.HIGH);
-            if (firstOrDefault != null)
-                Value = firstOrDefault.Value;
+            if(Previous.Any())
+                Inputs.ForEach(input => input.Value = Previous.First().Value);
 
             foreach (var cycle in Cycle())
                 cycle.ForEach(x => x.Calculate());
+
+            // Define the actuall value of the board by most occuring Probe value
+            Value = Probes.GroupBy(x => x.Value).OrderByDescending(grp => grp.Count()).Select(group => group.Key)
+                .First();
         }
 
         public IEnumerable<Cycle<Component>> Cycle()
         {
-            var inputs = Components.Select(pair => pair.Value).Where(node => node is Input && node.IsConnected);
+            var inputs = Inputs.Where(node => node.IsConnected);
 
             // Depth first search for every input
             foreach (var input in inputs)
-                // TODO Able to call without yield
-            foreach (var cycle in Components.DepthFirstCycle(input))
             {
-                cycle.Name = $"Cycle {Name}";
+                // TODO Able to call without yield
+                foreach (var cycle in Components.DepthFirstCycle(input))
+                {
+                    cycle.Name = $"Cycle {Name}";
 
-                yield return cycle;
+                    yield return cycle;
+                }
             }
         }
 
