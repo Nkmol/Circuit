@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
@@ -92,7 +91,7 @@ namespace Tests
             var lines = new[] {"A: Input"};
 
             // Act
-            var resultLines = lines.Select(x => parser.Parse(x)).ToArray(); ;
+            var resultLines = lines.Select(x => parser.Parse(x)).ToArray();
 
             // Arrange
             var result = resultLines[0];

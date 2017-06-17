@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DGML\DGMLParser.cs" />
+    <Compile Include="DGML\DGMLWriter.cs" />
+    <Compile Include="DGML\ParseStrategy.cs" />
     <Compile Include="FileReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

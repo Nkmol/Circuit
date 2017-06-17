@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Models
@@ -16,7 +15,7 @@ namespace Models
 
         public bool StartProbLinking { get; private set; }
 
-        public string[] Parse (string val)
+        public string[] Parse(string val)
         {
             if (val == null)
                 return null;
@@ -33,6 +32,7 @@ namespace Models
             // Don't parse comment lines
             if (val.StartsWith(Comment.ToString()))
                 return null;
+
             #endregion
 
             // Indicator that prob linking has completed
@@ -44,14 +44,8 @@ namespace Models
 
             // Parse line based on flag
             if (StartProbLinking)
-            {
                 return ParseLinkLine(val);
-            }
-            else
-            {
-                return ParseVariableLine(val);
-            }
-
+            return ParseVariableLine(val);
         }
 
         private string[] ParseVariableLine(string line)
@@ -70,7 +64,7 @@ namespace Models
                 return (compProps[0], compProps.ElementAtOrDefault(1));
             }
 
-            return new [] {varName, componentName, input};
+            return new[] {varName, componentName, input};
         }
 
         private string[] ParseLinkLine(string line)
@@ -80,7 +74,7 @@ namespace Models
             var assignTo = val[0];
 
             // Component linked to one ore more components
-            return new[] { assignTo }.Concat(val[1].Split(Addition)).ToArray();
+            return new[] {assignTo}.Concat(val[1].Split(Addition)).ToArray();
         }
     }
 }

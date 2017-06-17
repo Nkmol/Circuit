@@ -46,9 +46,10 @@
     <Compile Include="AND.cs" />
     <Compile Include="Bit.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="BoardDgmlParser.cs" />
+    <Compile Include="BoardDGMLStrategy.cs" />
     <Compile Include="BoardParser.cs" />
     <Compile Include="Component.cs" />
-    <Compile Include="DGMLWriter.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="NAND.cs" />
     <Compile Include="NOR.cs" />

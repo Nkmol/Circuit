@@ -2,6 +2,7 @@
 using System.Linq;
 using Datatypes.DirectedGraph;
 using Helpers;
+using Helpers.DGML;
 using Models;
 using Views;
 
@@ -19,7 +20,7 @@ namespace Circuit
 
         public List<Edge<Component>> Loops => _board.Components.BackEdges.ToList();
 
-        public static string DiagramExtension => DGMLWriter.Extension;
+        public static string DiagramExtension => DgmlWriter.Extension;
 
         public void LoadBoard(string path)
         {
@@ -36,7 +37,7 @@ namespace Circuit
             foreach (var line in reader.ReadLine())
             {
                 var parsedLine = boardParser.Parse(line);
-                if(parsedLine == null)
+                if (parsedLine == null)
                     continue;
 
                 if (boardParser.StartProbLinking)
@@ -80,28 +81,18 @@ namespace Circuit
 
         public void CreateDiagram(string path)
         {
+            var parser = new BoardDgmlParser();
+
             // Get all links
-            var links = new List<Edge<Component>>();
+            var edges = new List<Edge<Component>>();
             foreach (var cycle in _board.Cycle())
-            {
-                Component prev = null;
-                foreach (var node in cycle)
-                {
-                    if (prev != null)
-                        links.Add(new Edge<Component>(prev, node));
+                edges.AddRange(parser.ParseCyclesToEdge(cycle));
 
-                    prev = node;
-                }
-            }
+            parser.Parse(new BoardDgmlStrategy(), edges);
 
-            var uniqueLinks = links.Distinct();
-            var uniqueComp = links.Select(x => x.From).GroupBy(x => x.Name, (key, group) => group.First());
-
-            var dgmlWriter = new DGMLWriter();
-            uniqueLinks.Select(x => new DGMLWriter.Link(x.From.Name, x.To.Name, "")).ToList()
-                .ForEach(x => dgmlWriter.AddLink(x));
-            uniqueComp.Select(x => new DGMLWriter.Node(x.Name, $"{x.GetType().Name}[{x.Value}]")).ToList()
-                .ForEach(x => dgmlWriter.AddNode(x));
+            var dgmlWriter = new DgmlWriter();
+            dgmlWriter.Nodes = parser.Nodes;
+            dgmlWriter.Links = parser.Links;
 
             dgmlWriter.Serialize(path);
         }
