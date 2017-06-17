@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Helpers;
+using Datatypes.DirectedGraph;
 
 namespace Models
 {
-    using System.Runtime.CompilerServices;
-    using Datatypes;
-    using Datatypes.DirectedGraph;
-
     public class Board : Component
     {
-        public DirectGraph<Component> Components { get; }
-        public bool IsCyclic => Components.IsCyclic;
-        public List<Component> Probes => Components.Select(x => x.Value).Where(x => x is Probe).ToList();
-
         public Board()
         {
             Components = new DirectGraph<Component>();
@@ -30,6 +19,10 @@ namespace Models
             Components = nodes;
         }
 
+        public DirectGraph<Component> Components { get; }
+        public bool IsCyclic => Components.IsCyclic;
+        public List<Component> Probes => Components.Select(x => x.Value).Where(x => x is Probe).ToList();
+
         // No input is connected or no output is connected
         public new bool IsConnected { get; set; } = true;
 
@@ -41,9 +34,7 @@ namespace Models
                 Value = firstOrDefault.Value;
 
             foreach (var cycle in Cycle())
-            {
                 cycle.ForEach(x => x.Calculate());
-            }
         }
 
         public IEnumerable<Cycle<Component>> Cycle()
@@ -52,26 +43,23 @@ namespace Models
 
             // Depth first search for every input
             foreach (var input in inputs)
-            {
                 // TODO Able to call without yield
-                foreach (var cycle in Components.DepthFirstCycle(input))
-                {
-                    cycle.Name = $"Cycle {Name}";
+            foreach (var cycle in Components.DepthFirstCycle(input))
+            {
+                cycle.Name = $"Cycle {Name}";
 
-                    yield return cycle;
-                }
+                yield return cycle;
             }
         }
 
         public bool CheckConnection()
         {
-            var firstInput = Components.Select(pair => pair.Value).FirstOrDefault(node => node is Input && node.IsConnected);
+            var firstInput = Components.Select(pair => pair.Value)
+                .FirstOrDefault(node => node is Input && node.IsConnected);
             var firstProbe = Components.FirstOrDefault(node => node.Value is Probe).Value;
 
             if (firstInput == null || firstProbe == null)
-            {
                 IsConnected = false;
-            }
 
             return IsConnected;
         }

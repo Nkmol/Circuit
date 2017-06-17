@@ -1,8 +1,8 @@
-﻿namespace Views
-{
-    using System;
-    using Models;
+﻿using System;
+using Models;
 
+namespace Views
+{
     public class BoardView : IDrawAble
     {
         private readonly Board _board;

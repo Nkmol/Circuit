@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Datatypes;
 
 namespace Models
 {
-    using System.Linq;
-
     public class ComponentFactory : Singleton<ComponentFactory>, IFactory<Component>
     {
         private readonly IFactory<Component> _factory = new Factory<Component>();

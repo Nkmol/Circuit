@@ -1,8 +1,8 @@
-﻿namespace Datatypes.DirectedGraph
-{
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Datatypes.DirectedGraph
+{
     public class DirectGraph<T> : Dictionary<string, T>
         where T : GraphNode<T>
     {
@@ -30,13 +30,13 @@
                 if (recursionVisited.Contains(current))
                 {
                     BackEdges.Add(currentEdge);
-                    if(stack.Count != 0) recursionVisited = stack.Peek().Path;
+                    if (stack.Count != 0) recursionVisited = stack.Peek().Path;
                     continue;
                 }
 
                 recursionVisited.Add(current);
 
-                var nextNeightbours = current.Next.Select(node => node as T).ToList();
+                var nextNeightbours = current.Next.Select(node => node).ToList();
 
                 // Only returns valid cycles
                 if (nextNeightbours.Count == 0)
@@ -54,9 +54,7 @@
                 }
 
                 foreach (var neightbour in nextNeightbours)
-                {
-                    stack.Push(new Edge<T>(current, neightbour) { Path = recursionVisited.ToList()});
-                }
+                    stack.Push(new Edge<T>(current, neightbour) {Path = recursionVisited.ToList()});
             }
         }
     }

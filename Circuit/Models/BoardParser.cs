@@ -1,9 +1,8 @@
-﻿﻿﻿namespace Models
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+namespace Models
+{
     public class BoardParser
     {
         private const char Delimeter = ':';
@@ -24,20 +23,17 @@
             #region clean value
 
             foreach (var c in _trimMap)
-            {
                 val = val.Replace(c.ToString(), string.Empty);
-            }
 
             val = val.Trim();
 
             #endregion
 
             #region Early exit
+
             // Don't parse comment lines
             if (val.StartsWith(Comment.ToString()))
-            {
                 return string.Empty;
-            }
 
             // Indicator that prob linking has completed
             if (val == string.Empty)
@@ -45,6 +41,7 @@
                 StartProbLinking = true;
                 return string.Empty;
             }
+
             #endregion
 
 
@@ -58,12 +55,13 @@
                 return null;
 
             // Only split at first occurance
-            var val = line.Split(new []{ Delimeter }, 2);
+            var val = line.Split(new[] {Delimeter}, 2);
             var varName = val[0];
             var assignValue = val[1];
 
             // This function is only valuable in this function
             var (componentName, input) = ParseComponent(assignValue);
+
             (string componentName, string input) ParseComponent(string component)
             {
                 var compProps = component.Split(VariableDelimeter);
@@ -91,8 +89,8 @@
 
         public class LinkLine
         {
-            public string Varname;
             public IList<string> Values;
+            public string Varname;
 
             public LinkLine(string varname, IList<string> values)
             {
@@ -103,9 +101,9 @@
 
         public class VariableLine
         {
-            public string Varname;
             public string Compname;
             public string Input;
+            public string Varname;
 
             public VariableLine(string varname, string compname, string input)
             {

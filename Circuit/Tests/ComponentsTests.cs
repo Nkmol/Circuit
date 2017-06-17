@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models;
 
 namespace Tests
@@ -13,8 +12,8 @@ namespace Tests
         {
             // Arrange
             var port = new AND();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -29,8 +28,8 @@ namespace Tests
         {
             // Arrange
             var port = new AND();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -45,8 +44,8 @@ namespace Tests
         {
             // Arrange
             var port = new AND();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -61,7 +60,7 @@ namespace Tests
         {
             // Arrange
             var port = new NOT();
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -76,7 +75,7 @@ namespace Tests
         {
             // Arrange
             var port = new NOT();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -91,8 +90,8 @@ namespace Tests
         {
             // Arrange
             var port = new OR();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -107,8 +106,8 @@ namespace Tests
         {
             // Arrange
             var port = new OR();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -123,8 +122,8 @@ namespace Tests
         {
             // Arrange
             var port = new OR();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -139,8 +138,8 @@ namespace Tests
         {
             // Arrange
             var port = new NAND();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -155,8 +154,8 @@ namespace Tests
         {
             // Arrange
             var port = new NAND();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -171,8 +170,8 @@ namespace Tests
         {
             // Arrange
             var port = new NAND();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -187,8 +186,8 @@ namespace Tests
         {
             // Arrange
             var port = new NOR();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -203,8 +202,8 @@ namespace Tests
         {
             // Arrange
             var port = new NOR();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -219,8 +218,8 @@ namespace Tests
         {
             // Arrange
             var port = new NOR();
-            port.Previous.Add(new Input { Value = Bit.LOW });
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();
@@ -248,7 +247,7 @@ namespace Tests
         public void Input_DefaultNegative_OutputNegative()
         {
             // Arrange
-            var port = new Input { Value = Bit.LOW };
+            var port = new Input {Value = Bit.LOW};
 
             // Act
             port.Calculate();
@@ -263,7 +262,7 @@ namespace Tests
         {
             // Arrange
             var port = new Probe();
-            port.Previous.Add(new Input { Value = Bit.HIGH });
+            port.Previous.Add(new Input {Value = Bit.HIGH});
 
             // Act
             port.Calculate();
@@ -278,7 +277,7 @@ namespace Tests
         {
             // Arrange
             var port = new Probe();
-            port.Previous.Add(new Input { Value = Bit.LOW });
+            port.Previous.Add(new Input {Value = Bit.LOW});
 
             // Act
             port.Calculate();

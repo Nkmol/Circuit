@@ -1,20 +1,16 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Datatypes.DirectedGraph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 
 namespace Tests
 {
-    using Datatypes.DirectedGraph;
-    using Models;
-
     /// <summary>
-    /// Summary description for BoardTests
+    ///     Summary description for BoardTests
     /// </summary>
     [TestClass]
     public class BoardTests
     {
-
         [TestMethod]
         [TestCategory("Components")]
         public void Board_AddTwoProbesAndOneInput_GetTwoProbesByProperty()
@@ -68,9 +64,7 @@ namespace Tests
             // Act
             var cycles = new List<Cycle<Component>>();
             foreach (var cycle in board.Cycle())
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.AreEqual(2, cycles.Count);
@@ -103,9 +97,7 @@ namespace Tests
             // Act
             var cycles = new List<Cycle<Component>>();
             foreach (var cycle in board.Cycle())
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.AreEqual(0, cycles.Count);
@@ -118,7 +110,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var input = new Input() { Value = Bit.HIGH};
+            var input = new Input {Value = Bit.HIGH};
             var node1 = new OR();
             var node2 = new OR();
             var output = new Probe();
@@ -149,7 +141,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var input = new Input() { Value = Bit.LOW };
+            var input = new Input {Value = Bit.LOW};
             var node1 = new OR();
             var node2 = new OR();
             var output = new Probe();
@@ -180,7 +172,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var input = new Input() { Value = Bit.LOW };
+            var input = new Input {Value = Bit.LOW};
 
             board.Components.Add("input", input);
 
@@ -198,7 +190,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var input = new Input() { Value = Bit.LOW };
+            var input = new Input {Value = Bit.LOW};
             var output = new Probe();
 
             board.Components.Add("input", input);
@@ -218,7 +210,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var input = new Input() { Value = Bit.LOW };
+            var input = new Input {Value = Bit.LOW};
             var output = new Probe();
 
             input.LinkNext(output);
@@ -240,7 +232,7 @@ namespace Tests
             // Arrange
             var board = new Board();
 
-            var node1 = new OR() { Value = Bit.LOW };
+            var node1 = new OR {Value = Bit.LOW};
             var node2 = new OR();
 
             node1.LinkNext(node2);

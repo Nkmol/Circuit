@@ -1,13 +1,11 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Helpers.Tests
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
     [TestClass]
     public class FileReaderTests
     {
@@ -68,9 +66,7 @@ namespace Helpers.Tests
             // Act
             var lines = new List<string>();
             foreach (var line in fr.ReadLine())
-            {
                 lines.Add(line);
-            }
 
             // Assert
             Assert.AreEqual("# This file only contains comments", lines[0]);

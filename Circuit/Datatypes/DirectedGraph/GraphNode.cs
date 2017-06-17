@@ -1,7 +1,7 @@
-﻿namespace Datatypes.DirectedGraph
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Datatypes.DirectedGraph
+{
     public class GraphNode<T>
         where T : GraphNode<T>
     {

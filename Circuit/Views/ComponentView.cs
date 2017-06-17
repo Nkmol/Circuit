@@ -1,7 +1,7 @@
-﻿namespace Views
-{
-    using System;
+﻿using System;
 
+namespace Views
+{
     public class ComponentView : IDrawAble
     {
         public string Name { get; set; }

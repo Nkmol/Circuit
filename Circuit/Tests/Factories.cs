@@ -1,13 +1,11 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Datatypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 
 namespace Tests
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using Datatypes;
-    using Models;
-
     [TestClass]
     public class Factories
     {

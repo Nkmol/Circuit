@@ -1,19 +1,11 @@
-﻿using System;
+﻿using Datatypes.DirectedGraph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Datatypes.Tests
 {
-    using DirectedGraph;
-
     [TestClass]
     public class GraphNodeTests
     {
-        // Quickfix to use graphnode
-        public class GraphNode : GraphNode<GraphNode>
-        {
-
-        }
-
         [TestMethod]
         public void Node_AddLinkNext_NodeHasOneLinkNext()
         {
@@ -42,6 +34,11 @@ namespace Datatypes.Tests
             // Assert
             Assert.AreEqual(1, node2.Previous.Count);
             Assert.AreEqual(node2.Previous[0], node1);
+        }
+
+        // Quickfix to use graphnode
+        public class GraphNode : GraphNode<GraphNode>
+        {
         }
     }
 }

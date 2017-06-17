@@ -1,10 +1,9 @@
-﻿namespace ConsoleApp1
-{
-    using System;
-    using System.IO;
-    using System.Windows.Forms;
-    using Circuit;
+﻿using System;
+using System.Windows.Forms;
+using Circuit;
 
+namespace ConsoleApp1
+{
     internal class Program
     {
         private static BoardController _controller;
@@ -50,14 +49,12 @@
         private static void CreateDiagram()
         {
             Console.Clear();
-            SaveFileDialog dialog = new SaveFileDialog();
+            var dialog = new SaveFileDialog();
             dialog.Filter = "Directed Graph Markup Language (*.dgml)|*.dgml";
             var path = string.Empty;
 
             if (dialog.ShowDialog() == DialogResult.OK)
-            {
                 path = dialog.FileName;
-            }
 
             _controller.CreateDiagram(path);
 
@@ -68,16 +65,12 @@
         {
             // Ask for file
             var file = "";
-            OpenFileDialog dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog();
             dialog.Filter = "Text (*.txt)|*.txt";
             if (dialog.ShowDialog() == DialogResult.OK)
-            {
                 file = dialog.FileName;
-            }
             else
-            {
                 Environment.Exit(0);
-            }
 
             return file;
         }
@@ -103,9 +96,7 @@
             {
                 Console.WriteLine($"--- {cycle.Name} of starting point {cycle.Start.Name} [{cycle.Number}] ---");
                 foreach (var node in cycle)
-                {
                     Console.WriteLine($"   {node.Name} = {node.Value}");
-                }
                 Console.WriteLine();
             }
 
@@ -115,9 +106,7 @@
                 Console.WriteLine("This board contains invalid connections, resulting in a loop.");
                 Console.WriteLine("The following connections have been ignored: ");
                 foreach (var connection in _controller.Loops)
-                {
                     Console.WriteLine($"Contains a loop from {connection.From.Name} to {connection.To.Name}");
-                }
             }
 
             Console.WriteLine("--- Board Summary ---");
@@ -126,9 +115,7 @@
 
             Console.WriteLine("--- Output ----");
             foreach (var output in _controller.Outputs)
-            {
                 Console.WriteLine($"{output.Name} = {output.Value}");
-            }
         }
     }
 }

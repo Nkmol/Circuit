@@ -1,20 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Datatypes.DirectedGraph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Datatypes.Tests
 {
-    using System.Collections.Generic;
-    using DirectedGraph;
-
     [TestClass]
     public class DirectGraphTests
     {
-        // Quickfix to use graphnode
-        public class GraphNode : GraphNode<GraphNode>
-        {
-            
-        }
-
         //                     node2 
         //            node1 ->      -> node4
         //                     node3
@@ -44,9 +36,7 @@ namespace Datatypes.Tests
             // Act
             var cycles = new List<Cycle<GraphNode>>();
             foreach (var cycle in graph.DepthFirstCycle(node1))
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.AreEqual(2, cycles.Count);
@@ -77,11 +67,11 @@ namespace Datatypes.Tests
             // Arrange
             var graph = new DirectGraph<GraphNode>();
 
-            var node1 = new GraphNode() {Name = "node1"};
-            var node2 = new GraphNode() {Name = "node2"};
-            var node3 = new GraphNode() {Name = "node3"};
-            var node4 = new GraphNode() {Name = "node4"};
-            var node5 = new GraphNode() {Name = "node5"};
+            var node1 = new GraphNode {Name = "node1"};
+            var node2 = new GraphNode {Name = "node2"};
+            var node3 = new GraphNode {Name = "node3"};
+            var node4 = new GraphNode {Name = "node4"};
+            var node5 = new GraphNode {Name = "node5"};
 
             // Arrange - setup relations
             node1.LinkNext(node2);
@@ -100,9 +90,7 @@ namespace Datatypes.Tests
             // Act
             var cycles = new List<Cycle<GraphNode>>();
             foreach (var cycle in graph.DepthFirstCycle(node1))
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.IsTrue(graph.IsCyclic);
@@ -136,9 +124,7 @@ namespace Datatypes.Tests
             // Act
             var cycles = new List<Cycle<GraphNode>>();
             foreach (var cycle in graph.DepthFirstCycle(node1))
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.IsTrue(graph.IsCyclic);
@@ -167,9 +153,7 @@ namespace Datatypes.Tests
             // Act
             var cycles = new List<Cycle<GraphNode>>();
             foreach (var cycle in graph.DepthFirstCycle(node2))
-            {
                 cycles.Add(cycle);
-            }
 
             // Assert
             Assert.AreEqual(1, cycles.Count);
@@ -178,6 +162,11 @@ namespace Datatypes.Tests
             Assert.AreEqual(2, cycle1.Count);
             Assert.AreEqual(node2, cycle1[0]);
             Assert.AreEqual(node3, cycle1[1]);
+        }
+
+        // Quickfix to use graphnode
+        public class GraphNode : GraphNode<GraphNode>
+        {
         }
     }
 }

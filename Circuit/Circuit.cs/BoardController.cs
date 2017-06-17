@@ -1,25 +1,22 @@
-﻿namespace Circuit
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Xml;
-    using Datatypes.DirectedGraph;
-    using Helpers;
-    using Models;
-    using Views;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Datatypes.DirectedGraph;
+using Helpers;
+using Models;
+using Views;
 
+namespace Circuit
+{
     public class BoardController
     {
-        private BoardParser _boardParser;
-        private BoardView _boardView;
         private Board _board;
+        private BoardView _boardView;
 
-        public List<Probe> Outputs => _board.Probes.Select(x => (Probe)x).ToList();
+        public List<Probe> Outputs => _board.Probes.Select(x => (Probe) x).ToList();
 
         // Checks
         public bool IsBoardConnected => _board.IsConnected;
+
         public List<Edge<Component>> Loops => _board.Components.BackEdges;
 
         public static string DiagramExtension => DGMLWriter.Extension;
@@ -37,7 +34,6 @@
             var bb = new BoardBuilder();
 
             foreach (var line in reader.ReadLine())
-            {
                 if (boardParser.StartProbLinking)
                 {
                     var parserLink = boardParser.ParseLinkLine(line);
@@ -47,18 +43,11 @@
                 {
                     var component = boardParser.ParseVariableLine(line);
                     if (component != null)
-                    {
                         if (component.Compname.ToLower() == "board")
-                        {
                             bb.AddBoard(component.Varname, CreateBoard(component.Input));
-                        }
                         else
-                        {
                             bb.AddComponent(component.Varname, component.Compname, component.Input);
-                        }
-                    }
                 }
-            }
 
             return bb.Build();
         }
@@ -68,9 +57,7 @@
             foreach (var cycle in _board.Cycle())
             {
                 foreach (var node in cycle)
-                {
                     node.Calculate();
-                }
                 yield return cycle;
             }
         }
@@ -96,9 +83,7 @@
                 foreach (var node in cycle)
                 {
                     if (prev != null)
-                    {
                         links.Add(new Edge<Component>(prev, node));
-                    }
 
                     prev = node;
                 }

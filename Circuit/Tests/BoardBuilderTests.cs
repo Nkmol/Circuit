@@ -1,11 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Models;
 
 namespace Tests
 {
-    using System.Collections.Generic;
-    using Models;
-
     [TestClass]
     public class BoardBuilderTests
     {
@@ -15,7 +12,7 @@ namespace Tests
         {
             // Arrange
             var builder = new BoardBuilder();
-            
+
             // Act
             var varName = "InputNode";
             var compName = "Input";
@@ -185,7 +182,7 @@ namespace Tests
 
             var varName2 = "B";
 
-            builder.LinkList(varName1, new[] { varName2 });
+            builder.LinkList(varName1, new[] {varName2});
             // Assert
             var components = builder.Build().Components;
             var node1 = components[varName1];
@@ -210,7 +207,7 @@ namespace Tests
             var compName2 = "Probe";
             builder.AddComponent(varName2, compName2);
 
-            builder.LinkList(varName1, new[] { varName2 });
+            builder.LinkList(varName1, new[] {varName2});
             var board = builder.Build();
 
             // Create second board

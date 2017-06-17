@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Policy;
 
 namespace Models
 {
@@ -25,22 +24,19 @@ namespace Models
         public BoardBuilder LinkList(string compName, IList<string> links)
         {
             foreach (var link in links)
-            {
                 Link(link, compName);
-            }
 
             return this;
         }
 
         public BoardBuilder Link(string to, string from)
         {
-            var componentTo = _boardToBuild.Components.TryGetValue(to, out Component result1) ? result1 : null; ;
+            var componentTo = _boardToBuild.Components.TryGetValue(to, out Component result1) ? result1 : null;
+            ;
             var componentFrom = _boardToBuild.Components.TryGetValue(from, out Component result2) ? result2 : null;
 
             if (componentFrom != null && componentTo != null)
-            {
                 _boardToBuild.Components[from].LinkNext(componentTo);
-            }
 
             return this;
         }
@@ -48,6 +44,7 @@ namespace Models
         public BoardBuilder AddComponent(string varName, string componentName, string input = "LOW")
         {
             input = input ?? "LOW"; // Fix nullable input
+            input = input.ToUpper();
 
             var component = _componentFactory.Create(componentName);
 
@@ -56,9 +53,7 @@ namespace Models
 
             component.Name = varName;
             if (Enum.TryParse(input, out Bit result))
-            {
                 component.Value = result;
-            }
 
             _boardToBuild.Components[varName] = component;
 
