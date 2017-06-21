@@ -1,0 +1,6 @@
+Cin: INPUT;
+Node1: NOT;
+Cout: PROBE;
+
+Cin: Node1;
+Node1: Cout;

@@ -1,0 +1,6 @@
+Cin: INPUT;
+Board1: BOARD_C:\Users\Sander Mol\Desktop\Board.txt
+Cout: PROBE;
+
+Cin: Board1;
+Board1: Cout;
