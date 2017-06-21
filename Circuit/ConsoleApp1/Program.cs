@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Circuit;
+using Datatypes.DirectedGraph;
 
 namespace ConsoleApp1
 {
@@ -98,16 +100,9 @@ namespace ConsoleApp1
                 Environment.Exit(0);
             }
 
-            //            controller.StartSimulation();
-            foreach (var cycle in _controller.StartSimulationYieldCycles())
-            {
-                Console.WriteLine($"--- {cycle.Name} of starting point {cycle.Start.Name} [{cycle.Number}] ---");
-                foreach (var node in cycle)
-                    Console.WriteLine($"   {node.Name} = {node.Value}");
-                Console.WriteLine();
-            }
+            DrawCycles();
 
-            // Only know after cycling thru about all relations
+            // Only know after cycling thru
             if (_controller.Loops.Count > 0)
             {
                 Console.WriteLine();
@@ -127,8 +122,33 @@ namespace ConsoleApp1
             Console.WriteLine();
 
             Console.WriteLine("--- Output ----");
+            var bitSum = "";
             foreach (var output in _controller.Outputs)
+            {
                 Console.WriteLine($"{output.Name} = {output.Value}");
+                bitSum += ((int) output.Value).ToString();
+            }
+            Console.WriteLine($"Result: {bitSum}");
+        }
+
+        private static void DrawCycles()
+        {
+            //            controller.StartSimulation();
+            foreach (var cycle in _controller.StartSimulationYieldCycles())
+            {
+                if (!(cycle.Last() is ILeaf))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+
+                    Console.WriteLine($"The following cycle was not connected to a Probe");
+                }
+
+                Console.WriteLine($"--- {cycle.Name} of starting point {cycle.Start.Name} [{cycle.Number}] ---");
+                foreach (var node in cycle)
+                    Console.WriteLine($"   {node.Name} = {node.Value}");
+                Console.WriteLine();
+                Console.ResetColor();
+            }
         }
     }
 }

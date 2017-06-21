@@ -47,7 +47,7 @@ namespace Datatypes.DirectedGraph
                 var nextNeightbours = current.Next.Select(node => node).ToList();
 
                 // Only returns valid cycles
-                if (nextNeightbours.Count == 0 && current is ILeaf)
+                if (nextNeightbours.Count == 0)
                 {
                     var cycle = recursionVisited.ToList();
 
