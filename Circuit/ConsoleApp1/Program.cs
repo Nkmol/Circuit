@@ -89,15 +89,19 @@ namespace ConsoleApp1
             Console.WriteLine();
 
             _controller = new BoardController();
-            _controller.LoadBoard(file);
+            try
+            {
+                _controller.LoadBoard(file);
+            }
+            catch (Exception e)
+            {
+                ShowCriticalError(e.Message);
+            }
+
 
             if (!_controller.IsBoardConnected)
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("This board is not minimally connected");
-                Console.ReadKey(true);
-                Environment.Exit(0);
+                ShowCriticalError("This board is not minimally connected");
             }
 
             DrawCycles();
@@ -149,6 +153,15 @@ namespace ConsoleApp1
                 Console.WriteLine();
                 Console.ResetColor();
             }
+        }
+
+        private static void ShowCriticalError(string message)
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ReadKey(true);
+            Environment.Exit(0);
         }
     }
 }
